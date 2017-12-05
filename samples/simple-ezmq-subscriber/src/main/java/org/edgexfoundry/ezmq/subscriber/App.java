@@ -16,7 +16,7 @@ public class App {
 	 private static EZMQSubCallback callbackFactory() {
 		 EZMQSubCallback mCallback = new EZMQSubCallback() {
 	            public void onMessageCB(Event event) {
-	                System.out.println("[-------------------------------------");
+	                System.out.println("-------------------------------------");
 	                System.out.println("[APP: onMessageCB]");
 	                System.out.println("Device: " + event.getDevice());
 	                System.out.println("Readings: ");
@@ -29,7 +29,7 @@ public class App {
 	            }
 
 	            public void onMessageCB(String topic, Event event) {
-	                System.out.println("[-------------------------------------");
+	                System.out.println("-------------------------------------");
 	                System.out.println("[APP: onMessageCB]");
 	                System.out.println("Topic: " + topic);
 	                System.out.println("Device: " + event.getDevice());

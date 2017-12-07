@@ -27,7 +27,8 @@ public class EZMQPublisher {
 
     private final String PUB_TCP_PREFIX = "tcp://*:";
     private final String TOPIC_PATTERN = "[a-zA-Z0-9-_./]+";
-    private final static EdgeXLogger logger = EdgeXLoggerFactory.getEdgeXLogger(EZMQPublisher.class);
+    private final static EdgeXLogger logger = EdgeXLoggerFactory
+            .getEdgeXLogger(EZMQPublisher.class);
 
     /**
      * Publish data on specified port number. {@link EZMQPublisher#start} API

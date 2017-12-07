@@ -608,13 +608,13 @@ public final class EZMQProtoEvent {
             return PARSER.parseFrom(data, extensionRegistry);
         }
 
-        public static org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event parseFrom(byte[] data)
-                throws com.google.protobuf.InvalidProtocolBufferException {
+        public static org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event parseFrom(
+                byte[] data) throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data);
         }
 
-        public static org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event parseFrom(byte[] data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        public static org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event parseFrom(
+                byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data, extensionRegistry);
         }
@@ -765,7 +765,8 @@ public final class EZMQProtoEvent {
             }
 
             public org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event getDefaultInstanceForType() {
-                return org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event.getDefaultInstance();
+                return org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event
+                        .getDefaultInstance();
             }
 
             public org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event build() {
@@ -824,7 +825,8 @@ public final class EZMQProtoEvent {
                 }
             }
 
-            public Builder mergeFrom(org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event other) {
+            public Builder mergeFrom(
+                    org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event other) {
                 if (other == org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event
                         .getDefaultInstance())
                     return this;
@@ -1271,7 +1273,8 @@ public final class EZMQProtoEvent {
             /**
              * <code>repeated .ezmq.Reading reading = 7;</code>
              */
-            public org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading getReading(int index) {
+            public org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading getReading(
+                    int index) {
                 if (readingBuilder_ == null) {
                     return reading_.get(index);
                 } else {
@@ -2927,15 +2930,15 @@ public final class EZMQProtoEvent {
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
     static {
         java.lang.String[] descriptorData = {
-                "\n\013Event.proto\022\003ezmq\"\205\001\n\005Event\022\n\n\002id\030\001 \002(\t"
-                        + "\022\017\n\007created\030\002 \002(\003\022\020\n\010modified\030\003 \002(\003\022\016\n\006o"
-                        + "rigin\030\004 \002(\003\022\016\n\006pushed\030\005 \002(\003\022\016\n\006device\030\006 "
-                        + "\002(\t\022\035\n\007reading\030\007 \003(\0132\014.ezmq.Reading\"\205\001\n\007R"
-                        + "eading\022\n\n\002id\030\001 \002(\t\022\017\n\007created\030\002 \002(\003\022\020\n\010m"
-                        + "odified\030\003 \002(\003\022\016\n\006origin\030\004 \002(\003\022\016\n\006pushed\030"
-                        + "\005 \002(\003\022\014\n\004name\030\006 \002(\t\022\r\n\005value\030\007 \002(\t\022\016\n\006de"
-                        + "vice\030\010 \002(\tB3\n\"org.edgexfoundry.ezmq.proto"
-                        + "bufeventB\rEZMQProtoEvent" };
+                "\n\013Event.proto\022\004ezmq\"\206\001\n\005Event\022\n\n\002id\030\001 \002("
+                        + "\t\022\017\n\007created\030\002 \002(\003\022\020\n\010modified\030\003 \002(\003\022\016\n\006"
+                        + "origin\030\004 \002(\003\022\016\n\006pushed\030\005 \002(\003\022\016\n\006device\030\006"
+                        + " \002(\t\022\036\n\007reading\030\007 \003(\0132\r.ezmq.Reading\"\205\001\n"
+                        + "\007Reading\022\n\n\002id\030\001 \002(\t\022\017\n\007created\030\002 \002(\003\022\020\n"
+                        + "\010modified\030\003 \002(\003\022\016\n\006origin\030\004 \002(\003\022\016\n\006pushe"
+                        + "d\030\005 \002(\003\022\014\n\004name\030\006 \002(\t\022\r\n\005value\030\007 \002(\t\022\016\n\006"
+                        + "device\030\010 \002(\tB5\n#org.edgexfoundry.ezmq.pr"
+                        + "otobufeventB\016EZMQProtoEvent" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(
                     com.google.protobuf.Descriptors.FileDescriptor root) {

@@ -109,18 +109,6 @@ public class EZMQSubscriber {
     }
 
     /**
-     * Create filter as data consumer.
-     *
-     * @param filter
-     *            {@link EZMQFilter}
-     *
-     * @return {@link EZMQErrorCode}
-     */
-    public EZMQErrorCode createFilter(EZMQFilter filter) {
-        return EZMQErrorCode.EZMQ_OK;
-    }
-
-    /**
      * Starts SUB instance.
      *
      * @return {@link EZMQErrorCode}

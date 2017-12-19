@@ -172,7 +172,7 @@ public class EZMQPublisher {
         } finally {
             mPubLock.unlock();
         }
-        logger.debug("Published on topic: " + validTopic);
+        // logger.debug("Published on topic: " + validTopic);
         if (false == result) {
             logger.error("SendMore failed");
             return EZMQErrorCode.EZMQ_ERROR;

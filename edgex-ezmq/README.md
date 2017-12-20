@@ -7,12 +7,14 @@
 2. Build the EZMQ jar: </br>
     **Right Click on the project -> Run as -> Maven install**
 3. After step 2, it will create a jar: </br>
-    **~/EZMQ/edgex-ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
+    **~/protocol-ezmq-java/edgex-ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
 ## (B)Using Linux command line:
 
 1. chmod +x build.sh  **[Required only if copied from window machine to linux]**
 2. ./build.sh
+3. After step 2, it will create a jar: </br>
+    **~/protocol-ezmq-java/edgex-ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
 # Usage guide for EZMQ SDK [For micro-services] 
 1. Include following in your pom.xml :

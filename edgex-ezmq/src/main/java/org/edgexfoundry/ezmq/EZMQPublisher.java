@@ -117,7 +117,7 @@ public class EZMQPublisher {
             logger.error("Published without topic failed");
             return EZMQErrorCode.EZMQ_ERROR;
         }
-        logger.debug("Published without topic");
+        //logger.debug("Published without topic");
         return EZMQErrorCode.EZMQ_OK;
     }
 
@@ -172,7 +172,7 @@ public class EZMQPublisher {
         } finally {
             mPubLock.unlock();
         }
-        logger.debug("Published on topic: " + validTopic);
+        // logger.debug("Published on topic: " + validTopic);
         if (false == result) {
             logger.error("SendMore failed");
             return EZMQErrorCode.EZMQ_ERROR;

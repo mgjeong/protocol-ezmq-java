@@ -4,7 +4,7 @@
 blabla
 
 ## Pre-requisites
-Built EZMQ SDK "edgex-ezmq" [~/EZMQ/edgex-ezmq]
+Built ezMQ library [link](./../edgex-ezmq/)
 
 
 

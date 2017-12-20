@@ -25,6 +25,7 @@
     <nexusproxy>https://nexus.edgexfoundry.org</nexusproxy>
     <repobasepath>content/repositories</repobasepath>
 </properties>
+
 <dependencies>
     <dependency>
         <groupId>org.edgexfoundry.ezmq</groupId>
@@ -42,6 +43,7 @@
         <version>${core-exception.version}</version>
     </dependency>
 </dependencies>
+
 <repositories>
     <repository>
         <id>releases</id>

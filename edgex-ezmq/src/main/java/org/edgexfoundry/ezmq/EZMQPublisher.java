@@ -117,7 +117,7 @@ public class EZMQPublisher {
             logger.error("Published without topic failed");
             return EZMQErrorCode.EZMQ_ERROR;
         }
-        logger.debug("Published without topic");
+        //logger.debug("Published without topic");
         return EZMQErrorCode.EZMQ_OK;
     }
 

@@ -1,3 +1,18 @@
+# How to run Sample
+
+## Description
+blabla
+
+## Pre-requisites
+Built EZMQ SDK "edgex-ezmq" [~/EZMQ/edgex-ezmq]
+
+
+
+
+
+
+
+
 ============= EZMQ Samples guide ==================
 
 Pre-requisites:

@@ -36,7 +36,7 @@ Enter 2 for Topic Based delivery
 2. Build sample:</br>
    **Right Click on the project -> Run as -> Maven install**
 3. Run sample:</br>
-   (i) **Navigate to org.edgexfoundry.ezmq.server**
+   (i) **Navigate to org.edgexfoundry.ezmq.server**</br>
    (ii)**Right click on App.java -> Run As -> Java application**
 
 4. On successful run, it will show the following options on console:

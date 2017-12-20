@@ -1,4 +1,4 @@
-# Build instructions
+# EZMQ Build instructions
 
 ## (A)Using eclipse IDE:
 

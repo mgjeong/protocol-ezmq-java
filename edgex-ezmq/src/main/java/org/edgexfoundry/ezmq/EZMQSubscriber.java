@@ -300,14 +300,14 @@ public class EZMQSubscriber {
                     mSubLock.unlock();
                 }
 
-                logger.debug("Event received");
+                //logger.debug("Event received");
                 event = EZMQEventConverter.toEdgeXEvent(data);
                 if (null != event) {
                     if (null == topicBytes) {
                         mCallback.onMessageCB(event);
                     } else {
                         String recvTopic = new String(topicBytes);
-                        logger.debug("Topic: " + recvTopic);
+                        //logger.debug("Topic: " + recvTopic);
                         mCallback.onMessageCB(recvTopic, event);
                     }
                 }

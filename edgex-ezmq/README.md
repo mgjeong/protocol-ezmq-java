@@ -2,11 +2,11 @@
 
 ## (A)Using eclipse IDE:
 
-1. Import the EZMQ sdk [edgex-ezmq]:
+1. Import the EZMQ sdk [edgex-ezmq]:</br>
     **File -> Import -> Maven -> Existing Maven Projects -> Browse to "edgex-ezmq" -> Finish**
-2. Build the EZMQ jar: 
+2. Build the EZMQ jar: </br>
     **Right Click on the project -> Run as -> Maven install**
-3. After step 2, it will create a jar: 
+3. After step 2, it will create a jar: </br>
     **~/EZMQ/edgex-ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
 ## (B)Using Linux command line:

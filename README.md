@@ -18,13 +18,13 @@ Following is the architecture of ezMQ client library: </br> </br>
 * Clustering Support.
 </br></br>
 
-### How to build 
+## How to build 
 
 Build guide of **ezmq sdk** is given
 [here](./edgex-ezmq/README.md)
 
 
-### How to run sample
+## How to run sample
 
 Build guide of **ezmq samples** is given 
 [here](./samples/README.md)

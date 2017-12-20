@@ -6,7 +6,7 @@ blabla
 ## Pre-requisites
 Built ezMQ library [link](./../edgex-ezmq/)
 
-## Build Client
+## Build Client Sample
 ### Using eclipse IDE
 
 1. Import the EZMQ Client sample [edgex-ezmq-client]:
@@ -39,7 +39,7 @@ Built ezMQ library [link](./../edgex-ezmq/)
    $ mvn package
 
 
-## Build Server
+## Build Server Sample
 ### Using eclipse IDE
 1. Import the EZMQ Server sample [edgex-ezmq-server]:
    File -> Import -> Maven -> Existing Maven Projects -> Browse to "edgex-ezmq-server" -> Finish

@@ -23,10 +23,10 @@ Following is the architecture of ezMQ client library: </br> </br>
 1. Java 1.8 or higher <br>
 2. Maven 3.5 or higher <br>
 
-Build guide of **ezmq sdk** is given [here](./edgex-ezmq/README.md)
+Build guide of **ezMQ sdk** is given [here](./edgex-ezmq/README.md)
 
 
 ## How to run sample
 
-Build guide of **ezmq samples** is given 
+Build guide of **ezMQ samples** is given 
 [here](./samples/README.md)

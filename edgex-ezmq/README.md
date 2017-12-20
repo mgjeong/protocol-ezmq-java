@@ -11,8 +11,9 @@
 
 ## (B)Using Linux command line:
 
-1. ./build.sh
-2. After step 2, it will create a jar: </br>
+1. Go to ~/protocol-ezmq-java/edgex-ezmq
+2. ./build.sh
+3. After step 2, it will create a jar: </br>
     **~/protocol-ezmq-java/edgex-ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
 # Usage guide for EZMQ SDK [For micro-services] 

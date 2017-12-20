@@ -14,11 +14,11 @@ Built ezMQ library [link](./../edgex-ezmq/)
 2. Build sample:</br>
    **Right Click on the project -> Run as -> Maven install**
 3. Run sample:</br>
-   (i) **Navigate to org.edgexfoundry.ezmq.client**
+   (i) **Navigate to org.edgexfoundry.ezmq.client**</br>
    (ii) **Right click on App.java -> Run As -> Java application**
 4. On successful run, it will show the following options on console:
 ```
-EZMQ initialized
+[main] DEBUG org.edgexfoundry.ezmq.EZMQAPI - EZMQ initialized
 Enter 1 for General Event testing
 Enter 2 for Topic Based delivery
 ```
@@ -41,7 +41,7 @@ Enter 2 for Topic Based delivery
 
 4. On successful run, it will show the following options on console:
 ```
-EZMQ initialized
+[main] DEBUG org.edgexfoundry.ezmq.EZMQAPI - EZMQ initialized
 Enter 1 for General Event testing
 Enter 2 for Topic Based delivery
 ```

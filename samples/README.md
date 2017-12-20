@@ -1,4 +1,4 @@
-# EZMQ Samples instructions
+# ezMQ Samples instructions
 
 ## Description
 EZMQ has subscriber and publisher sample applications. Please build and run using the following guide to experiment different options in sample.

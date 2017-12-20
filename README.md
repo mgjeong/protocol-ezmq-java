@@ -19,7 +19,7 @@ Following is the architecture of ezMQ client library: </br> </br>
 </br></br>
 
 ## How to build 
-**For building the EZMQ SDK following are the pre-requisites:**
+**For building the ezMQ SDK following are the pre-requisites:**
 1. Java 1.8 or higher <br>
 2. Maven 3.5 or higher <br>
 

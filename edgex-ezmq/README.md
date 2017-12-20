@@ -1,8 +1,8 @@
-# EZMQ Build instructions
+# ezMQ Build instructions
 
 ## (A)Using eclipse IDE:
 
-1. Import the EZMQ sdk [edgex-ezmq]:</br>
+1. Import the ezMQ sdk [edgex-ezmq]:</br>
     **File -> Import -> Maven -> Existing Maven Projects -> Browse to "edgex-ezmq" -> Finish**
 2. Build the EZMQ jar: </br>
     **Right Click on the project -> Run as -> Maven install**
@@ -16,7 +16,7 @@
 3. After step 2, it will create a jar: </br>
     **~/protocol-ezmq-java/edgex-ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
-# Usage guide for EZMQ SDK [For micro-services] 
+# Usage guide for ezMQ SDK [For micro-services] 
 1. Include following in your pom.xml :
 
 ```

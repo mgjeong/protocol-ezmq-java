@@ -1,6 +1,4 @@
-=========== EZMQ guide ==========
-
---------- Build instructions ---------
+# Build instructions
 
 Pre-requisite:
 Built core-domain service

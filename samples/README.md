@@ -70,7 +70,7 @@ Built ezMQ library [link](./../edgex-ezmq/)
    $ mvn clean
    $ mvn compile
    $ mvn package
-  
+  <br><br>
 ## Test
 ### 1. Execute Client <br>
    java -cp target/edgex-ezmq-subscriber-sample.jar org.edgexfoundry.ezmq.client.App

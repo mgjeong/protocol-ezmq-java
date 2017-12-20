@@ -15,4 +15,4 @@ if there is some build error. please check fire-wall on network.
 
 ### How to run Sample
 
-Description [here](./sample/README.md)
+Description [here](./samples/README.md)

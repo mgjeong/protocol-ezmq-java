@@ -1,4 +1,4 @@
-# EZMQ Samples Build instructions
+# EZMQ Samples instructions
 
 ## Description
 EZMQ has subscriber and publisher sample applications. Please build and run using the following guide to experiment different options in sample.
@@ -52,6 +52,5 @@ Enter 2 for Topic Based delivery
 2. ./build.sh
 3. java -jar target/edgex-ezmq-publisher-sample.jar
 
-   
-**Note: Logs and snapshot version is subject to change.**
 
+**Note: Logs and snapshot version is subject to change.**

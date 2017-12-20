@@ -1,22 +1,16 @@
-# protocol-ezMQ-java
+# protocol-ezmq-java
 
-Description & Architecture</br></br>
+put short description & architecture </br></br>
 
-link to WIKI [here]($Write a Wiki link address$) (later)
+link to wiki [here]($Write a Wiki link address$) - delete if wiki page is not ready
 
 ### How to build 
 
-dependency jars should be installed in below step
-
-run build.sh in *EZMQ/java/edgex-ezmq* path
-
-if there is some build error. please check fire-wall on network.
-
+put some discription (eg. configuration etc)
 [here](./edgex-ezmq/README.md)
 
 
-### How to run Sample
+### How to run sample
 
-Description 
-
+put short discription about sample
 [here](./samples/README.md)

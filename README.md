@@ -6,11 +6,11 @@ link to wiki [here]($Write a Wiki link address$) - delete if wiki page is not re
 
 ### How to build 
 
-put some discription (eg. configuration etc)
+Build guide of **ezmq sdk** is given
 [here](./edgex-ezmq/README.md)
 
 
 ### How to run sample
 
-put short discription about sample
+Build guide of **ezmq samples** is given 
 [here](./samples/README.md)

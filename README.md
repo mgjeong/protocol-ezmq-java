@@ -1,9 +1,9 @@
-# ezMQ Java Client SDK
+# Ezmq Java Client Library
 
 protocol-ezmq-java is a library (jar) which provides a standard messaging interface over various data streaming 
 and serialization / deserialization middlewares along with some added functionalities.</br>
-Following is the architecture of ezMQ client library: </br> </br>
-![ezMQ Architecture](doc/images/ezMQ_architecture_0.1.png?raw=true "ezMQ Arch")
+Following is the architecture of ezmq client library: </br> </br>
+![ezmq Architecture](doc/images/ezMQ_architecture_0.1.png?raw=true "ezmq Arch")
 
 ## Features:
 * Currently supports streaming using 0mq and serialization / deserialization using protobuf.
@@ -14,7 +14,7 @@ Following is the architecture of ezMQ client library: </br> </br>
 ## Future Work:
 * High speed parallel ordered serialization / deserialization based on streaming load.
 * Threadpool for multi-subscriber handling.
-* Router pattern.
+* Router pattern. For number of subscribers to single publisher use case.
 * Clustering Support.
 </br></br>
 

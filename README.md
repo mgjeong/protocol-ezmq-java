@@ -30,3 +30,11 @@ Build guide of **ezmq library** is given [here](./edgex-ezmq/README.md)
 
 Build guide of **ezmq samples** is given 
 [here](./samples/README.md)
+
+## Unit test and Code coverage report generation
+
+When ezmq library is built with **./build.sh**, it will build all the unit test cases and will generate code coverage report in following directory: </br>
+`~/protocol-ezmq-java/edgex-ezmq/target/jacoco-ut/` </br>
+
+To see the report, open **index.html** in web browser from following directory:</br>
+`~/protocol-ezmq-java/edgex-ezmq/target/jacoco-ut/org.edgexfoundry.ezmq/` </br>

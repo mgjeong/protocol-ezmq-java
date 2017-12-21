@@ -1,9 +1,9 @@
 #!/bin/sh
 PROJECT_ROOT=$(pwd)
 echo $PROJECT_ROOT
-cd ../../../../
+cd ../../
 REPO_ROOT=$(pwd)
-cd EZMQ/java/edgex-ezmq
+cd ezmq
 EZMQ_ROOT=$(pwd)
 
 #start install EZMQ

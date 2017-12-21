@@ -1,15 +1,15 @@
-# ezMQ Samples instructions
+# ezmq Samples instructions
 
 ## Description
-EZMQ has subscriber and publisher sample applications. Please build and run using the following guide to experiment different options in sample.
+ezmq has subscriber and publisher sample applications. Please build and run using the following guide to experiment different options in sample.
 
 ## Pre-requisites
-Built ezMQ library [link](./../edgex-ezmq/)
+Built ezmq library [link](./../edgex-ezmq/)
 
 ## Build and Run Subscriber sample
 ### Using eclipse IDE
 
-1. Import the EZMQ Client sample [edgex-ezmq-client]:</br>
+1. Import the ezmq Client sample [edgex-ezmq-client]:</br>
    **File -> Import -> Maven -> Existing Maven Projects -> Browse to "edgex-ezmq-client" -> Finish**
 2. Build sample:</br>
    **Right Click on the project -> Run as -> Maven install**
@@ -31,7 +31,7 @@ Enter 2 for Topic Based delivery
 
 ## Build and Run Publisher sample
 ### Using eclipse IDE
-1. Import the EZMQ Server sample [edgex-ezmq-server]:</br>
+1. Import the ezmq Server sample [edgex-ezmq-server]:</br>
    **File -> Import -> Maven -> Existing Maven Projects -> Browse to "edgex-ezmq-server" -> Finish**
 2. Build sample:</br>
    **Right Click on the project -> Run as -> Maven install**

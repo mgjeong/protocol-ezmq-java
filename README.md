@@ -1,4 +1,4 @@
-# Ezmq Java Client Library
+# ezmq Java Client Library
 
 protocol-ezmq-java is a library (jar) which provides a standard messaging interface over various data streaming 
 and serialization / deserialization middlewares along with some added functionalities.</br>

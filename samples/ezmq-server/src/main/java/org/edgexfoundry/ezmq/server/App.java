@@ -17,6 +17,8 @@ public class App {
     private static EZMQCallback mCallback;
     private static final int mPort = 5562;
     private static EZMQErrorCode result = EZMQErrorCode.EZMQ_ERROR;
+    public static EZMQAPI apiInstance = EZMQAPI.getInstance();
+    public static EZMQPublisher pubInstance = null;
 
     private static void callback() {
         mCallback = new EZMQCallback() {
@@ -74,11 +76,9 @@ public class App {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        EZMQAPI apiInstance = EZMQAPI.getInstance();
         apiInstance.initialize();
         callback();
 
-        EZMQPublisher pubInstance = null;
         int choice = -1;
         String topic = null;
 
@@ -110,6 +110,20 @@ public class App {
             return;
         }
 
+        // handle command line ctrl+c signal and call stop publisher
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                result = pubInstance.stop();
+                if (result != EZMQErrorCode.EZMQ_OK) {
+                    System.out.println("stop API: error occured");
+                }
+                result = apiInstance.terminate();
+                if (result != EZMQErrorCode.EZMQ_OK) {
+                    System.out.println("Terminate API: error occured");
+                }
+                System.out.println("!!!!! Exiting !!!!");
+            }
+        }));
         Event event = getEdgeXEvent();
         int i = 1;
         System.out.println("--------- Will Publish 15 events at interval of 2 seconds ---------");
@@ -127,13 +141,5 @@ public class App {
             Thread.sleep(2000);
             i++;
         }
-
-        // stop API call is required to clear zeroMQ socket
-        result = pubInstance.stop();
-        if (result != EZMQErrorCode.EZMQ_OK) {
-            System.out.println("stop API: error occured");
-            return;
-        }
-        System.out.println("!!!!! Exiting !!!!");
     }
 }

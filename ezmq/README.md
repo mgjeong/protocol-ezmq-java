@@ -1,15 +1,15 @@
 # ezmq library build instructions
 
-### How to build ###
-#### Using eclipse IDE ####
+## How to build ##
+ - Using eclipse IDE
    1. Import the ezmq library [edgex-ezmq]:</br>
        **File -> Import -> Maven -> Existing Maven Projects -> Browse to "edgex-ezmq" -> Finish**
    2. Build the ezmq jar: </br>
        **Right Click on the project -> Run as -> Maven install**
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
-
-#### Using MVN ####
+   
+ - Using MVN
    1. Go to ~/protocol-ezmq-java/edgex-ezmq
    2. 
    ```shell
@@ -18,7 +18,7 @@
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
-#### Using Build Script ####
+ - Using Build Script
    1. Go to ~/protocol-ezmq-java/edgex-ezmq
    2. 
    ```shell

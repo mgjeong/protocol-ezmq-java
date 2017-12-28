@@ -29,9 +29,8 @@ Enter 2 for Topic Based delivery
    ```
    $ ./build.sh
    ```
-**Note:**
-Once it is built, sample can be also be run using:
-`$ java -jar target/edgex-ezmq-subscriber-sample.jar`
+3. Once it is built, sample can be also be run using:
+   `$ java -jar target/edgex-ezmq-subscriber-sample.jar`
 
 ### Publisher sample
 - Using eclipse IDE
@@ -57,8 +56,7 @@ Enter 2 for Topic Based delivery
    ```
    $ ./build.sh
    ```
-**Note:**
-Once it is built, sample can be also be run using:
+3. Once it is built, sample can be also be run using:
 `$ java -jar target/edgex-ezmq-publisher-sample.jar`
 
 **Note: Logs and snapshot version is subject to change.**

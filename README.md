@@ -29,8 +29,6 @@ $ git config --global http.proxy http://proxyuser:proxypwd@proxyserver.com:8080
 
 
 ### How to run ###
-
-#### Test ####
   - Build and run guide of **ezmq samples** is given [here](./samples/README.md)
 
 

@@ -11,34 +11,29 @@
    
  - Using MVN
    1. Go to ~/protocol-ezmq-java/edgex-ezmq
-   2. 
-   ```shell
-   $ mvn clean install -U
-   ```
+   2. Run the maven command:
+      ```shell
+      $ mvn clean install -U
+      ```
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
  - Using Build Script
    1. Go to ~/protocol-ezmq-java/edgex-ezmq
-   2. 
-   ```shell
-   $ ./build.sh
-   ```
+   2. Run the script:
+      ```shell
+      $ ./build.sh
+      ```
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
-
-#### Binaries ####
+## ezmq Binary info ##
    - ezmq library
      - Library : edgex-ezmq-0.0.1-SNAPSHOT.jar
      - Includes : Messaging Interface APIs  
      - Features : Various data streaming/serialization/deserialization middlewares along with some added functionalities  
-<br /><br />
 
-
-
-
-### Usage guide for ezmq library (For micro-services) ### 
+## Usage guide for ezmq library (For micro-services) ## 
    - Include following in your pom.xml
    ```
    <properties>

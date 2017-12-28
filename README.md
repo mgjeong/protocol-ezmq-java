@@ -24,15 +24,15 @@ $ git config --global http.proxy http://proxyuser:proxypwd@proxyserver.com:8080
   - [Setting up proxy for maven](https://maven.apache.org/guides/mini/guide-proxies.html)
 
 
-### How to build ###
+## How to build ##
   - Build guide of **ezmq library** is given [here](./ezmq/README.md)
 
 
-### How to run ###
+## How to run ##
   - Build and run guide of **ezmq samples** is given [here](./samples/README.md)
 
 
-### Future Work ###
+## Future Work ##
   - High speed parallel ordered serialization / deserialization based on streaming load.
   - Threadpool for multi-subscriber handling.
   - Router pattern. For number of subscribers to single publisher use case.

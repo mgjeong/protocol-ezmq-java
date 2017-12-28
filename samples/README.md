@@ -25,14 +25,14 @@ Enter 2 for Topic Based delivery
 
  - Using Linux Command line
 1. Go to ~/protocol-ezmq-java/samples/ezmq-client
-2. 
- ```
- ./build.sh
- ```
-3. 
-```
- java -jar target/edgex-ezmq-subscriber-sample.jar
- ```
+2. Run the script: (It will build and run the subscriber sample)
+   ```
+   $ ./build.sh
+   ```
+**Note:**
+Once it is built, sample can be also be run using:
+`$ java -jar target/edgex-ezmq-subscriber-sample.jar`
+
 ### Publisher sample
 - Using eclipse IDE
 1. Import the ezmq Server sample [ezmq-server]:</br>
@@ -53,13 +53,12 @@ Enter 2 for Topic Based delivery
 
 - Using Linux Command line
 1. Go to ~/protocol-ezmq-java/samples/ezmq-server
-2. 
-```
-./build.sh
-```
-3. 
-```
-java -jar target/edgex-ezmq-publisher-sample.jar
-```
+2. Run the script: (It will build and run the publisher sample)
+   ```
+   $ ./build.sh
+   ```
+**Note:**
+Once it is built, sample can be also be run using:
+`$ java -jar target/edgex-ezmq-publisher-sample.jar`
 
 **Note: Logs and snapshot version is subject to change.**

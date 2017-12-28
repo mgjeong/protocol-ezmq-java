@@ -29,13 +29,16 @@
 
 
 ### Binaries ###
-   ezmq library
+   - ezmq library
      - Library : edgex-ezmq-0.0.1-SNAPSHOT.jar
-     - Includes : Messaging Interface APIs
-     - Features : Various data streaming/serialization/deserialization middlewares along with some added functionalities
-  
-  
-### Usage guide for ezmq library [For micro-services] ### 
+     - Includes : Messaging Interface APIs  
+     - Features : Various data streaming/serialization/deserialization middlewares along with some added functionalities  
+<br /><br />
+
+
+
+
+### Usage guide for ezmq library (For micro-services) ### 
    - Include following in your pom.xml
    ```
    <properties>

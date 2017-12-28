@@ -21,8 +21,7 @@ ezmq has subscriber and publisher sample applications. Please build and run usin
 Enter 1 for General Event testing
 Enter 2 for Topic Based delivery
 ```
- **Follow the instructions on the screen.**
-
+ 
  - Using Linux Command line
 1. Go to ~/protocol-ezmq-java/samples/ezmq-client
 2. Run the script: (It will build and run the subscriber sample)
@@ -48,7 +47,6 @@ Enter 2 for Topic Based delivery
 Enter 1 for General Event testing
 Enter 2 for Topic Based delivery
 ```
-**Follow the instructions on the screen.**
 
 - Using Linux Command line
 1. Go to ~/protocol-ezmq-java/samples/ezmq-server
@@ -59,4 +57,4 @@ Enter 2 for Topic Based delivery
 3. Once it is built, sample can be also be run using:
 `$ java -jar target/edgex-ezmq-publisher-sample.jar`
 
-**Note: Logs and snapshot version is subject to change.**
+Note that logs and snapshot version is subject to change.

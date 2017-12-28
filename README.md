@@ -31,6 +31,10 @@ $ git config --global http.proxy http://proxyuser:proxypwd@proxyserver.com:8080
 ## How to run ##
   - Build and run guide of **ezmq samples** is given [here](./samples/README.md)
 
+## Usage guide for ezmq library (for microservices)
+
+1. Reference ezmq library APIs : [doc/javadoc/index.html](doc/javadoc/index.html)
+
 
 ## Future Work ##
   - High speed parallel ordered serialization / deserialization based on streaming load.

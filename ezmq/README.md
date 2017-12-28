@@ -28,7 +28,7 @@
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
 
-### Binaries ###
+#### Binaries ####
    - ezmq library
      - Library : edgex-ezmq-0.0.1-SNAPSHOT.jar
      - Includes : Messaging Interface APIs  

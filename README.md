@@ -8,7 +8,7 @@ and serialization / deserialization middlewares along with some added functional
   - High speed serialization and deserialization.
 
 
-### Prerequisites ###
+## Prerequisites ##
   - Remember, you must configure proxies for git and maven accordingly if necessary.
   - Setting up proxy for git
 ```shell

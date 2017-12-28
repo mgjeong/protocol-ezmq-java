@@ -9,12 +9,24 @@
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
-### Using Linux command line ###
+### Using MVN ###
+   1. Go to ~/protocol-ezmq-java/edgex-ezmq
+   2. 
+   ```shell
+   $ mvn clean install -U
+   ```
+   3. After step 2, it will create a jar: </br>
+       **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
+
+### Using Build Script ###
 
    1. Go to ~/protocol-ezmq-java/edgex-ezmq
-   2. ./build.sh
+   2. 
+   ```shell
+   $ ./build.sh
+   ```
    3. After step 2, it will create a jar: </br>
-       **~/protocol-ezmq-java/edgex-ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
+       **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
 ### Binaries
    

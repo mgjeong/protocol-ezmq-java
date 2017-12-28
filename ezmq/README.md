@@ -1,7 +1,7 @@
 # ezmq library build instructions
 
-### Using eclipse IDE ###
-
+### How to build ###
+#### Using eclipse IDE ####
    1. Import the ezmq library [edgex-ezmq]:</br>
        **File -> Import -> Maven -> Existing Maven Projects -> Browse to "edgex-ezmq" -> Finish**
    2. Build the ezmq jar: </br>
@@ -9,7 +9,7 @@
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
-### Using MVN ###
+#### Using MVN ####
    1. Go to ~/protocol-ezmq-java/edgex-ezmq
    2. 
    ```shell
@@ -18,8 +18,7 @@
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
-### Using Build Script ###
-
+#### Using Build Script ####
    1. Go to ~/protocol-ezmq-java/edgex-ezmq
    2. 
    ```shell
@@ -28,14 +27,14 @@
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
-### Binaries  
+### Binaries ###
    ezmq library
      - Library : edgex-ezmq-0.0.1-SNAPSHOT.jar
      - Includes : Messaging Interface APIs
      - Features : Various data streaming/serialization/deserialization middlewares along with some added functionalities
 
 
-### Usage guide for ezmq library [For micro-services] 
+### Usage guide for ezmq library [For micro-services] ### 
    - Include following in your pom.xml
    ```
    <properties>

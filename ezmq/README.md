@@ -7,7 +7,7 @@
    2. Build the ezmq jar: </br>
        **Right Click on the project -> Run as -> Maven install**
    3. After step 2, it will create a jar: </br>
-       **~/protocol-ezmq-java/edgex-ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
+       **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
 ### Using Linux command line ###
 
@@ -17,7 +17,10 @@
        **~/protocol-ezmq-java/edgex-ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
 ### Binaries
-
+   
+     - Executable : manager-0.1.0-SNAPSHOT.jar
+     - Includes : RESTful APIs
+     - Features : Abstracts interfaces for those open-source data processing engines
 
 
 ### Usage guide for ezmq library [For micro-services] 

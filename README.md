@@ -7,8 +7,6 @@ and serialization / deserialization middlewares along with some added functional
   - Topic based subscription and data routing at source (read publisher).
   - High speed serialization and deserialization.
 
-Following is the architecture of ezmq library: </br> </br>
-![ezmq Architecture](doc/images/ezMQ_architecture_0.1.png?raw=true "ezmq Arch")
 
 ### Prerequisites ###
   - Remember, you must configure proxies for git and maven accordingly if necessary.

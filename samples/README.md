@@ -57,4 +57,3 @@ Enter 2 for Topic Based delivery
 3. Once it is built, sample can be also be run using:
 `$ java -jar target/edgex-ezmq-publisher-sample.jar`
 
-Note that logs and snapshot version is subject to change.

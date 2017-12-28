@@ -14,14 +14,13 @@
  * limitations under the License.
  *
  *******************************************************************************/
- 
+
 package org.edgexfoundry.ezmq.server;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 import org.edgexfoundry.domain.core.Event;
 import org.edgexfoundry.domain.core.Reading;
@@ -32,7 +31,7 @@ import org.edgexfoundry.ezmq.EZMQPublisher;
 
 public class App {
     private static EZMQCallback mCallback;
-    private static final int mPort = 5562;
+    private static int mPort;
     private static EZMQErrorCode result = EZMQErrorCode.EZMQ_ERROR;
     public static EZMQAPI apiInstance = EZMQAPI.getInstance();
     public static EZMQPublisher pubInstance = null;
@@ -92,35 +91,41 @@ public class App {
         return event;
     }
 
+    private static void printError() {
+        System.out.println("\nRe-run the application as shown in below examples: ");
+        System.out.println("\n  (1) For publishing without topic: ");
+        System.out.println("      java -jar target/edgex-ezmq-publisher-sample.jar -port 5562");
+        System.out.println("\n  (2) For publishing with topic: ");
+        System.out.println(
+                "      java -jar target/edgex-ezmq-publisher-sample.jar -port 5562 -t topic1");
+        System.exit(-1);
+    }
+
     public static void main(String[] args) throws InterruptedException {
-        apiInstance.initialize();
-        callback();
 
-        int choice = -1;
+        // get port and topic from command line arguments
+        int n = 0;
         String topic = null;
-
-        System.out.println("Enter 1 for General Event testing");
-        System.out.println("Enter 2 for Topic Based delivery");
-
-        @SuppressWarnings("resource")
-        Scanner scanner = new Scanner(System.in);
-        choice = scanner.nextInt();
-
-        switch (choice) {
-        case 1:
-            pubInstance = new EZMQPublisher(mPort, mCallback);
-            break;
-        case 2:
-            pubInstance = new EZMQPublisher(mPort, mCallback);
-            System.out.print("Enter the topic: ");
-            topic = scanner.next();
-            System.out.println("Topic is : " + topic);
-            break;
-        default:
-            System.out.println("Invalid choice..[Re-run application]");
-            return;
+        if (args.length != 2 && args.length != 4) {
+            printError();
+        }
+        while (n < args.length) {
+            if (args[n].equalsIgnoreCase("-port")) {
+                mPort = Integer.parseInt(args[n + 1]);
+                System.out.println("Given Port: " + mPort);
+                n = n + 2;
+            } else if (args[n].equalsIgnoreCase("-t")) {
+                topic = args[n + 1];
+                System.out.println("Topic is : " + topic);
+                n = n + 2;
+            } else {
+                printError();
+            }
         }
 
+        apiInstance.initialize();
+        callback();
+        pubInstance = new EZMQPublisher(mPort, mCallback);
         result = pubInstance.start();
         if (result != EZMQErrorCode.EZMQ_OK) {
             System.out.println("start API: error occured");
@@ -141,6 +146,16 @@ public class App {
                 System.out.println("!!!!! Exiting !!!!");
             }
         }));
+
+        // This delay is added to prevent JeroMQ first packet drop during
+        // initial connection of publisher and subscriber.
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
         Event event = getEdgeXEvent();
         int i = 1;
         System.out.println("--------- Will Publish 15 events at interval of 2 seconds ---------");

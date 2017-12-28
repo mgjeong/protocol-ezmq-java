@@ -14,11 +14,10 @@
  * limitations under the License.
  *
  *******************************************************************************/
- 
+
 package org.edgexfoundry.ezmq.client;
 
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -32,8 +31,8 @@ import org.edgexfoundry.ezmq.EZMQSubscriber.EZMQSubCallback;
 public class App {
     private static EZMQSubCallback mCallback;
     // use host name or ip address of publisher on mip when test with docker.
-    private static final String mip = "localhost";
-    private static final int mPort = 5562;
+    private static String mip;
+    private static int mPort;
     private static EZMQErrorCode result = EZMQErrorCode.EZMQ_ERROR;
     public static EZMQAPI apiInstance = EZMQAPI.getInstance();
     public static EZMQSubscriber subInstance = null;
@@ -71,35 +70,51 @@ public class App {
         };
     }
 
+    private static void printError() {
+        System.out.println("\nRe-run the application as shown in below examples: ");
+        System.out.println("\n  (1) For subscribing without topic: ");
+        System.out.println(
+                "      java -jar target/edgex-ezmq-subscriber-sample.jar -ip 107.108.81.116 -port 5562");
+        System.out.println(
+                "      java -jar target/edgex-ezmq-subscriber-sample.jar -ip localhost -port 5562");
+        System.out.println("\n  (2) For subscribing with topic: ");
+        System.out.println(
+                "      java -jar target/edgex-ezmq-subscriber-sample.jar -ip 107.108.81.116 -port 5562 -t topic1");
+        System.out.println(
+                "      java -jar target/edgex-ezmq-subscriber-sample.jar -ip localhost -port 5562 -t topic1");
+        System.exit(-1);
+    }
+
     public static void main(String[] args) {
-        apiInstance.initialize();
-        callback();
 
-        int choice = -1;
-        String topic = null;
-
-        System.out.println("Enter 1 for General Event testing");
-        System.out.println("Enter 2 for Topic Based delivery");
-
-        @SuppressWarnings("resource")
-        Scanner scanner = new Scanner(System.in);
-        choice = scanner.nextInt();
-
-        switch (choice) {
-        case 1:
-            subInstance = new EZMQSubscriber(mip, mPort, mCallback);
-            break;
-        case 2:
-            subInstance = new EZMQSubscriber(mip, mPort, mCallback);
-            System.out.print("Enter the topic: ");
-            topic = scanner.next();
-            System.out.println("Topic is : " + topic);
-            break;
-        default:
-            System.out.println("Invalid choice..[Re-run application]");
-            return;
+        // get ip and port and topic from command line arguments
+        if (args.length != 4 && args.length != 6) {
+            printError();
         }
 
+        int n = 0;
+        String topic = null;
+        while (n < args.length) {
+            if (args[n].equalsIgnoreCase("-ip")) {
+                mip = args[n + 1];
+                System.out.println("Given Ip: " + mip);
+                n = n + 2;
+            } else if (args[n].equalsIgnoreCase("-port")) {
+                mPort = Integer.parseInt(args[n + 1]);
+                System.out.println("Given Port: " + mPort);
+                n = n + 2;
+            } else if (args[n].equalsIgnoreCase("-t")) {
+                topic = args[n + 1];
+                System.out.println("Topic is : " + topic);
+                n = n + 2;
+            } else {
+                printError();
+            }
+        }
+
+        apiInstance.initialize();
+        callback();
+        subInstance = new EZMQSubscriber(mip, mPort, mCallback);
         result = subInstance.start();
         if (result != EZMQErrorCode.EZMQ_OK) {
             System.out.println("start API: error occured");

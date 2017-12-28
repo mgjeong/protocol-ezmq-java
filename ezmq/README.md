@@ -27,11 +27,13 @@
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
 
+
 ### Binaries ###
    ezmq library
      - Library : edgex-ezmq-0.0.1-SNAPSHOT.jar
      - Includes : Messaging Interface APIs
      - Features : Various data streaming/serialization/deserialization middlewares along with some added functionalities
+
 
 
 ### Usage guide for ezmq library [For micro-services] ### 

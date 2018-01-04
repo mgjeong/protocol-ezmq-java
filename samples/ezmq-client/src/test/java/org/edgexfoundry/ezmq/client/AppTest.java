@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  *******************************************************************************/
- 
+
 package org.edgexfoundry.ezmq.client;
 
 import junit.framework.Test;

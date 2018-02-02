@@ -17,12 +17,20 @@
 
 package org.edgexfoundry.ezmq;
 
+import java.awt.Event;
+
 /**
- * Enum represent result/error-codes of EZMQ service.
+ * Common interface for EZMQMessage. Needs to be implemented by all the message
+ * formats.
+ * 
+ * {@link Event} {@link EZMQMessage}
  */
-public enum EZMQErrorCode {
-    EZMQ_OK,
-    EZMQ_ERROR,
-    EZMQ_INVALID_TOPIC,
-    EZMQ_INVALID_CONTENT_TYPE
+public interface EZMQMessage {
+
+    /**
+     * Get content-type for the message.
+     *
+     * @return EZMQContentType content-type.
+     */
+    EZMQContentType getContentType();
 }

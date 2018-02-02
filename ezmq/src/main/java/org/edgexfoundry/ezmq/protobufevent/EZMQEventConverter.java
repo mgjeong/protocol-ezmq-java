@@ -44,7 +44,6 @@ public class EZMQEventConverter {
         if (null == event) {
             return null;
         }
-
         org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event protoEventObj = null;
         org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event protoEvent = null;
         try {

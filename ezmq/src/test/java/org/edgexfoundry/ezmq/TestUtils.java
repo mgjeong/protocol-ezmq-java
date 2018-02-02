@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import org.edgexfoundry.domain.core.Event;
 import org.edgexfoundry.domain.core.Reading;
+import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 
 public class TestUtils {
 
@@ -96,5 +97,11 @@ public class TestUtils {
     public static String getInProcUniqueAddress() {
         String address = "inproc://shutdown-" + UUID.randomUUID().toString();
         return address;
+    }
+
+    public static EZMQByteData getEzmqByteData() {
+        byte[] byteData = { 0x40, 0x05, 0x10, 0x11, 0x12 };
+        EZMQByteData data = new EZMQByteData(byteData);
+        return data;
     }
 }

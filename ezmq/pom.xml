@@ -17,7 +17,6 @@
       <commons.lang3.version>3.5</commons.lang3.version>
       <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
       <spring.boot.plugin.version>1.4.0.RELEASE</spring.boot.plugin.version>
-      <core-domain.version>0.2.0</core-domain.version>
       <support-logging-client.version>0.2.0</support-logging-client.version>
       <slf4j.version>1.8.0-alpha2</slf4j.version>
       <protobuf.version>3.3.1</protobuf.version>
@@ -46,11 +45,6 @@
          <groupId>org.apache.commons</groupId>
          <artifactId>commons-lang3</artifactId>
          <version>${commons.lang3.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.edgexfoundry</groupId>
-         <artifactId>core-domain</artifactId>
-         <version>${core-domain.version}</version>
       </dependency>
       <dependency>
          <groupId>org.edgexfoundry</groupId>

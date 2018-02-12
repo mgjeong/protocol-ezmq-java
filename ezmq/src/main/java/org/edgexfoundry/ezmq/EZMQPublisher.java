@@ -22,6 +22,7 @@ import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.edgexfoundry.domain.core.Event;
+import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 import org.edgexfoundry.ezmq.protobufevent.EZMQEventConverter;
 import org.edgexfoundry.support.logging.client.EdgeXLogger;
 import org.edgexfoundry.support.logging.client.EdgeXLoggerFactory;
@@ -44,12 +45,15 @@ public class EZMQPublisher {
 
     private final String PUB_TCP_PREFIX = "tcp://*:";
     private final String TOPIC_PATTERN = "[a-zA-Z0-9-_./]+";
+    private final int EZMQ_VERSION = 1;
+    private final int CONTENT_TYPE_OFFSET = 5;
+    private final int VERSION_OFFSET = 2;
+
     private final static EdgeXLogger logger = EdgeXLoggerFactory
             .getEdgeXLogger(EZMQPublisher.class);
 
     /**
-     * Publish data on specified port number. {@link EZMQPublisher#start} API
-     * should be called before publishing the message.
+     * Constructor for EZMQ publisher.
      *
      * @param port
      *            port for publishing message/events.
@@ -99,27 +103,64 @@ public class EZMQPublisher {
         return EZMQErrorCode.EZMQ_OK;
     }
 
-    /**
-     * Publish events on the socket for subscribers.
-     *
-     * @param event
-     *            {@link Event}
-     * @return {@link EZMQErrorCode}
-     */
-    public EZMQErrorCode publish(Event event) {
-        if (null == mPublisher || null == event) {
-            logger.error("Publisher or event is null");
-            return EZMQErrorCode.EZMQ_ERROR;
+    private byte[] getHeader(EZMQContentType contentType) {
+        byte ezmqHeader = 0x00;
+        byte ezmqVersion = EZMQ_VERSION;
+        ezmqVersion = (byte) (ezmqVersion << VERSION_OFFSET);
+        ezmqHeader = (byte) (ezmqHeader | ezmqVersion);
+        byte ezmqContentType = (byte) contentType.ordinal();
+        ezmqContentType = (byte) (ezmqContentType << CONTENT_TYPE_OFFSET);
+        ezmqHeader = (byte) (ezmqHeader | ezmqContentType);
+        byte[] header = { ezmqHeader };
+        return header;
+    }
+
+    private EZMQErrorCode publishInternal(String topic, EZMQMessage ezmqMessage) {
+        EZMQContentType contentType = ezmqMessage.getContentType();
+
+        // form the EZMQ header
+        byte[] header = getHeader(contentType);
+
+        // form the EZMQ data
+        byte[] byteEvent = null;
+        if (EZMQContentType.EZMQ_CONTENT_TYPE_PROTOBUF == contentType) {
+            Event event = (Event) ezmqMessage;
+            byteEvent = EZMQEventConverter.toProtoBuf(event);
+        } else if (EZMQContentType.EZMQ_CONTENT_TYPE_BYTEDATA == contentType) {
+            EZMQByteData byteData = (EZMQByteData) ezmqMessage;
+            byteEvent = byteData.getByteData();
+        } else {
+            return EZMQErrorCode.EZMQ_INVALID_CONTENT_TYPE;
         }
-        byte[] byteEvent = EZMQEventConverter.toProtoBuf(event);
+
         if (null == byteEvent) {
             logger.error("ByteEvent is null");
             return EZMQErrorCode.EZMQ_ERROR;
         }
+
+        // Send on Socket
         boolean result = false;
         try {
             mPubLock.lock();
             if (null != mPublisher) {
+
+                // send topic [if any]
+                if (!(topic.isEmpty())) {
+                    result = mPublisher.sendMore(topic);
+                    if (false == result) {
+                        logger.error("SendMore failed [topic]");
+                        return EZMQErrorCode.EZMQ_ERROR;
+                    }
+                }
+
+                // send header
+                result = mPublisher.sendMore(header);
+                if (false == result) {
+                    logger.error("SendMore failed [header]");
+                    return EZMQErrorCode.EZMQ_ERROR;
+                }
+
+                // send data
                 result = mPublisher.send(byteEvent);
             } else {
                 return EZMQErrorCode.EZMQ_ERROR;
@@ -131,11 +172,26 @@ public class EZMQPublisher {
             mPubLock.unlock();
         }
         if (false == result) {
-            logger.error("Published without topic failed");
+            logger.error("Publish failed [data]");
             return EZMQErrorCode.EZMQ_ERROR;
         }
-        //logger.debug("Published without topic");
+        // logger.debug("Published data");
         return EZMQErrorCode.EZMQ_OK;
+    }
+
+    /**
+     * Publish events on the socket for subscribers.
+     *
+     * @param ezmqMessage
+     *            {@link Event} {@link EZMQByteData}
+     * @return {@link EZMQErrorCode}
+     */
+    public EZMQErrorCode publish(EZMQMessage ezmqMessage) {
+        if (null == mPublisher || null == ezmqMessage) {
+            logger.error("Publisher or event is null");
+            return EZMQErrorCode.EZMQ_ERROR;
+        }
+        return publishInternal("", ezmqMessage);
     }
 
     /**
@@ -148,12 +204,12 @@ public class EZMQPublisher {
      *
      * @param topic
      *            Topic on which event needs to be published.
-     * @param event
-     *            {@link Event}
+     * @param ezmqMessage
+     *            {@link Event} {@link EZMQByteData}
      * @return {@link EZMQErrorCode}
      */
-    public EZMQErrorCode publish(String topic, Event event) {
-        if (null == mPublisher || null == event) {
+    public EZMQErrorCode publish(String topic, EZMQMessage ezmqMessage) {
+        if (null == mPublisher || null == ezmqMessage) {
             logger.error("Publisher or event is null");
             return EZMQErrorCode.EZMQ_ERROR;
         }
@@ -164,37 +220,7 @@ public class EZMQPublisher {
             logger.error("Invalid topic: " + topic);
             return EZMQErrorCode.EZMQ_INVALID_TOPIC;
         }
-
-        boolean result = false;
-        byte[] byteEvent = EZMQEventConverter.toProtoBuf(event);
-        if (null == byteEvent) {
-            logger.error("byteEvent is null");
-            return EZMQErrorCode.EZMQ_ERROR;
-        }
-        try {
-            mPubLock.lock();
-            if (null != mPublisher) {
-                result = mPublisher.sendMore(validTopic);
-                if (false == result) {
-                    logger.error("SendMore failed");
-                    return EZMQErrorCode.EZMQ_ERROR;
-                }
-                result = mPublisher.send(byteEvent);
-            } else {
-                return EZMQErrorCode.EZMQ_ERROR;
-            }
-        } catch (Exception e) {
-            logger.error("Exception while publishing: " + e.getMessage());
-            return EZMQErrorCode.EZMQ_ERROR;
-        } finally {
-            mPubLock.unlock();
-        }
-        // logger.debug("Published on topic: " + validTopic);
-        if (false == result) {
-            logger.error("SendMore failed");
-            return EZMQErrorCode.EZMQ_ERROR;
-        }
-        return EZMQErrorCode.EZMQ_OK;
+        return publishInternal(validTopic, ezmqMessage);
     }
 
     /**
@@ -209,13 +235,13 @@ public class EZMQPublisher {
      *
      * @param topics
      *            Topic on which event needs to be published.
-     * @param event
-     *            {@link Event}
+     * @param ezmqMessage
+     *            {@link Event} {@link EZMQByteData}
      * @return {@link EZMQErrorCode}
      *
      */
-    public EZMQErrorCode publish(List<String> topics, Event event) {
-        if (null == event) {
+    public EZMQErrorCode publish(List<String> topics, EZMQMessage ezmqMessage) {
+        if (null == ezmqMessage) {
             logger.error("Event is null");
             return EZMQErrorCode.EZMQ_ERROR;
         }
@@ -227,7 +253,7 @@ public class EZMQPublisher {
 
         EZMQErrorCode result = EZMQErrorCode.EZMQ_OK;
         for (String topic : topics) {
-            result = publish(topic, event);
+            result = publish(topic, ezmqMessage);
             if (result != EZMQErrorCode.EZMQ_OK) {
                 return result;
             }

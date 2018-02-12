@@ -28,6 +28,7 @@ import org.edgexfoundry.ezmq.EZMQAPI;
 import org.edgexfoundry.ezmq.EZMQCallback;
 import org.edgexfoundry.ezmq.EZMQErrorCode;
 import org.edgexfoundry.ezmq.EZMQPublisher;
+import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 
 public class App {
     private static EZMQCallback mCallback;
@@ -99,6 +100,12 @@ public class App {
         System.out.println(
                 "      java -jar target/edgex-ezmq-publisher-sample.jar -port 5562 -t topic1");
         System.exit(-1);
+    }
+
+    public static EZMQByteData getEzmqByteData() {
+        byte[] byteData = { 0x40, 0x05, 0x10, 0x11, 0x12 };
+        EZMQByteData data = new EZMQByteData(byteData);
+        return data;
     }
 
     public static void main(String[] args) throws InterruptedException {

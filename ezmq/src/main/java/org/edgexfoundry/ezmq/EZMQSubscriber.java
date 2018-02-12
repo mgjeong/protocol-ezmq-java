@@ -22,6 +22,7 @@ import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.edgexfoundry.domain.core.Event;
+import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 import org.edgexfoundry.ezmq.protobufevent.EZMQEventConverter;
 import org.edgexfoundry.support.logging.client.EdgeXLogger;
 import org.edgexfoundry.support.logging.client.EdgeXLoggerFactory;
@@ -56,6 +57,8 @@ public class EZMQSubscriber {
     private final String TCP_PREFIX = "tcp://";
     private final String INPROC_PREFIX = "inproc://shutdown-";
     private final String TOPIC_PATTERN = "[a-zA-Z0-9-_./]+";
+    private final int CONTENT_TYPE_OFFSET = 5;
+    private final int CONTENT_TYPE_MASK = 0xFF;
     private final static EdgeXLogger logger = EdgeXLoggerFactory
             .getEdgeXLogger(EZMQSubscriber.class);
 
@@ -108,10 +111,10 @@ public class EZMQSubscriber {
         /**
          * Invoked when message is received.
          *
-         * @param event
+         * @param ezmqMessage
          *            {@link Event}
          */
-        public void onMessageCB(Event event);
+        public void onMessageCB(EZMQMessage ezmqMessage);
 
         /**
          * Invoked when message is received for a specific topic.
@@ -119,10 +122,10 @@ public class EZMQSubscriber {
          * @param topic
          *            Topic for the received event.
          *
-         * @param event
+         * @param ezmqMessage
          *            {@link Event}
          */
-        public void onMessageCB(String topic, Event event);
+        public void onMessageCB(String topic, EZMQMessage ezmqMessage);
     }
 
     /**
@@ -277,52 +280,79 @@ public class EZMQSubscriber {
         return result;
     }
 
-    private void receive() {
-        byte[] data = null;
-        byte[] topicBytes = null;
+    private void parseData() {
+        byte[] frame1 = null;
+        byte[] frame2 = null;
+        byte[] frame3 = null;
         Event event = null;
+        EZMQByteData byteData = null;
+        String recvTopic = null;
+        boolean isTopic = false;
 
+        // Read data frames from socket
+        try {
+            mSubLock.lock();
+            if (null != mSubscriber) {
+                frame1 = mSubscriber.recv();
+                if (mSubscriber.hasReceiveMore()) {
+                    frame2 = mSubscriber.recv();
+                    if (mSubscriber.hasReceiveMore()) {
+                        isTopic = true;
+                        frame3 = mSubscriber.recv();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Exception while receiving: " + e.getMessage());
+        } finally {
+            mSubLock.unlock();
+        }
+
+        if (false == isTopic) {
+            frame3 = frame2;
+            frame2 = frame1;
+        } else {
+            recvTopic = new String(frame1);
+        }
+
+        // Parse the header
+        byte ezmqHeader = frame2[0];
+        int contentType = ((ezmqHeader & CONTENT_TYPE_MASK) >> CONTENT_TYPE_OFFSET);
+
+        // Parse the data
+        if (contentType == EZMQContentType.EZMQ_CONTENT_TYPE_PROTOBUF.ordinal()) {
+            event = EZMQEventConverter.toEdgeXEvent(frame3);
+            if (false == isTopic) {
+                mCallback.onMessageCB(event);
+            } else {
+                mCallback.onMessageCB(recvTopic, event);
+            }
+        } else if (contentType == EZMQContentType.EZMQ_CONTENT_TYPE_BYTEDATA.ordinal()) {
+            byteData = new EZMQByteData(frame3);
+            if (false == isTopic) {
+                mCallback.onMessageCB(byteData);
+            } else {
+                mCallback.onMessageCB(recvTopic, byteData);
+            }
+        } else {
+            logger.error("Not a supported type");
+        }
+
+    }
+
+    private void receive() {
         while (null != mThread && !mThread.isInterrupted()) {
             if (null == mSubscriber || null == mPoller) {
                 logger.error("Subscriber or poller is null");
                 return;
             }
-
             mPoller.poll();
             if (mPoller.pollin(0)) {
-                try {
-                    mSubLock.lock();
-                    if (null != mSubscriber) {
-                        data = mSubscriber.recv();
-                        if (mSubscriber.hasReceiveMore()) {
-                            topicBytes = data;
-                            data = mSubscriber.recv();
-                        }
-                    }
-                } catch (Exception e) {
-                    logger.error("Exception while receiving: " + e.getMessage());
-                } finally {
-                    mSubLock.unlock();
-                }
-
-                //logger.debug("Event received");
-                event = EZMQEventConverter.toEdgeXEvent(data);
-                if (null != event) {
-                    if (null == topicBytes) {
-                        mCallback.onMessageCB(event);
-                    } else {
-                        String recvTopic = new String(topicBytes);
-                        //logger.debug("Topic: " + recvTopic);
-                        mCallback.onMessageCB(recvTopic, event);
-                    }
-                }
+                parseData();
             } else if (mPoller.pollin(1)) {
                 logger.debug("Received shut down request");
                 break;
             }
-
-            data = null;
-            topicBytes = null;
         }
     }
 

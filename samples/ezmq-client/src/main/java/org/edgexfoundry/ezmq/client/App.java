@@ -24,9 +24,12 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.edgexfoundry.domain.core.Event;
 import org.edgexfoundry.domain.core.Reading;
 import org.edgexfoundry.ezmq.EZMQAPI;
+import org.edgexfoundry.ezmq.EZMQContentType;
 import org.edgexfoundry.ezmq.EZMQErrorCode;
+import org.edgexfoundry.ezmq.EZMQMessage;
 import org.edgexfoundry.ezmq.EZMQSubscriber;
 import org.edgexfoundry.ezmq.EZMQSubscriber.EZMQSubCallback;
+import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 
 public class App {
     private static EZMQSubCallback mCallback;
@@ -39,31 +42,53 @@ public class App {
     public static Lock terminateLock = new ReentrantLock();
     public static java.util.concurrent.locks.Condition condVar = terminateLock.newCondition();
 
+    private static void printEvent(Event event) {
+        System.out.println("Device: " + event.getDevice());
+        System.out.println("Readings: ");
+        List<Reading> readings = event.getReadings();
+        for (Reading reading : readings) {
+            System.out.print("Key: " + reading.getName());
+            System.out.println("  Value: " + reading.getValue());
+        }
+    }
+
+    private static void printByteData(EZMQByteData byteData) {
+        byte[] data = byteData.getByteData();
+        System.out.println("Byte Data Size: " + data.length);
+        for (int i = 0; i < data.length; i++) {
+            System.out.print(" " + data[i]);
+        }
+        System.out.println();
+    }
+
     private static void callback() {
         mCallback = new EZMQSubCallback() {
-            public void onMessageCB(Event event) {
+            public void onMessageCB(EZMQMessage ezmqMsg) {
                 System.out.println("[-------------------------------------");
                 System.out.println("[APP: onMessageCB]");
-                System.out.println("Device: " + event.getDevice());
-                System.out.println("Readings: ");
-                List<Reading> readings = event.getReadings();
-                for (Reading reading : readings) {
-                    System.out.print("Key: " + reading.getName());
-                    System.out.println("  Value: " + reading.getValue());
+                EZMQContentType type = ezmqMsg.getContentType();
+                System.out.println("Cotent type: " + type);
+
+                if (EZMQContentType.EZMQ_CONTENT_TYPE_PROTOBUF == type) {
+                    printEvent((Event) ezmqMsg);
+                } else if (EZMQContentType.EZMQ_CONTENT_TYPE_BYTEDATA == type) {
+                    printByteData((EZMQByteData) ezmqMsg);
                 }
                 System.out.println("----------------------------------------");
             }
 
-            public void onMessageCB(String topic, Event event) {
+            public void onMessageCB(String topic, EZMQMessage ezmqMsg) {
                 System.out.println("[-------------------------------------");
                 System.out.println("[APP: onMessageCB]");
                 System.out.println("Topic: " + topic);
-                System.out.println("Device: " + event.getDevice());
-                System.out.println("Readings: ");
-                List<Reading> readings = event.getReadings();
-                for (Reading reading : readings) {
-                    System.out.print("Key: " + reading.getName());
-                    System.out.println("  Value: " + reading.getValue());
+                EZMQContentType type = ezmqMsg.getContentType();
+                System.out.println("Cotent type: " + type);
+
+                if (EZMQContentType.EZMQ_CONTENT_TYPE_PROTOBUF == type) {
+                    printEvent((Event) ezmqMsg);
+
+                } else if (EZMQContentType.EZMQ_CONTENT_TYPE_BYTEDATA == type) {
+                    printByteData((EZMQByteData) ezmqMsg);
                 }
                 System.out.println("----------------------------------------");
             }

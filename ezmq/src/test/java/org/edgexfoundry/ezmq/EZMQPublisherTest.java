@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.edgexfoundry.domain.core.Event;
+import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,8 +82,10 @@ public class EZMQPublisherTest {
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.start());
 
         Event event = TestUtils.getEdgeXEvent();
+        EZMQByteData byteData = TestUtils.getEzmqByteData();
 
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(byteData));
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.stop());
         assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.terminate());
     }
@@ -97,8 +100,10 @@ public class EZMQPublisherTest {
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.start());
 
         Event event = TestUtils.getEdgeXEvent();
+        EZMQByteData byteData = TestUtils.getEzmqByteData();
 
-        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(mTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(mTopic, byteData));
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.stop());
         assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.terminate());
     }
@@ -113,28 +118,14 @@ public class EZMQPublisherTest {
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.start());
 
         Event event = TestUtils.getEdgeXEvent();
-
-        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(mTopic, event));
-        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.stop());
-        assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.terminate());
-    }
-
-    @Test
-    public void publishTest4() {
-        EZMQAPI apiInstance = EZMQAPI.getInstance();
-        assertNotNull(apiInstance);
-        assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.initialize());
-        EZMQPublisher pubInstance = new EZMQPublisher(mPort, mCallback);
-        assertNotNull(pubInstance);
-        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.start());
-
-        Event event = TestUtils.getEdgeXEvent();
+        EZMQByteData byteData = TestUtils.getEzmqByteData();
 
         List<String> topics = new ArrayList<String>();
         topics.add("topic1");
         topics.add("topic2");
 
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(topics, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(topics, byteData));
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.stop());
         assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.terminate());
     }
@@ -149,68 +140,85 @@ public class EZMQPublisherTest {
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.start());
 
         Event event = TestUtils.getEdgeXEvent();
+        EZMQByteData byteData = TestUtils.getEzmqByteData();
 
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(mTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(mTopic, byteData));
 
         // Empty topic test
         String testingTopic = "";
         assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, byteData));
 
         // Alphabet test
         testingTopic = "topic";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         // Numeric test
         testingTopic = "123";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         // Alpha-Numeric test
         testingTopic = "1a2b3";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         // Alphabet forward slash test
         testingTopic = "topic/";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         // Alphabet-Numeric, forward slash test
         testingTopic = "topic/13/4jtjos/";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         // Alphabet-Numeric, forward slash test
         testingTopic = "123a/1this3/4jtjos";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         // Alphabet, backslash test
         testingTopic = "topic\";";
         assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, byteData));
 
         // Alphabet-Numeric, forward slash and space test
         testingTopic = "topic/13/4jtjos/ ";
         assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, byteData));
 
         // Special character test
         testingTopic = "*123a";
         assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, byteData));
 
         // Sentence test
         testingTopic = "This is a topic";
         assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(testingTopic, byteData));
 
         // Topic contain forward slash at last
         testingTopic = "topic/122/livingroom/";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         // Topic contain -
         testingTopic = "topic/122/livingroom/-";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         // Topic contain _
         testingTopic = "topic/122/livingroom_";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         // Topic contain .
         testingTopic = "topic/122.livingroom.";
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, event));
+        assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(testingTopic, byteData));
 
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.stop());
         assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.terminate());
@@ -224,8 +232,11 @@ public class EZMQPublisherTest {
         assertEquals(EZMQErrorCode.EZMQ_ERROR, pubInstance.start());
 
         Event event = TestUtils.getWrongEvent();
+        EZMQByteData byteData = TestUtils.getEzmqByteData();
 
         assertEquals(EZMQErrorCode.EZMQ_ERROR, pubInstance.publish(event));
+        assertEquals(EZMQErrorCode.EZMQ_ERROR, pubInstance.publish(byteData));
+
         assertEquals(EZMQErrorCode.EZMQ_ERROR, pubInstance.stop());
         assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.terminate());
     }
@@ -238,8 +249,10 @@ public class EZMQPublisherTest {
         assertEquals(EZMQErrorCode.EZMQ_ERROR, pubInstance.start());
 
         Event event = TestUtils.getWrongEvent();
-
         assertEquals(EZMQErrorCode.EZMQ_ERROR, pubInstance.publish(mTopic, event));
+        EZMQByteData byteData = new EZMQByteData(null);
+        assertEquals(EZMQErrorCode.EZMQ_ERROR, pubInstance.publish(mTopic, byteData));
+
         assertEquals(EZMQErrorCode.EZMQ_ERROR, pubInstance.stop());
         assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.terminate());
     }
@@ -254,16 +267,20 @@ public class EZMQPublisherTest {
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.start());
 
         Event event = TestUtils.getEdgeXEvent();
+        EZMQByteData byteData = TestUtils.getEzmqByteData();
         String topic = null;
         assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(topic, event));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(topic, byteData));
 
         List<String> topics = null;
         assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(topics, event));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(topics, byteData));
 
         topics = new ArrayList<String>();
         topics.add("topic1");
         topics.add(null);
         assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(topics, event));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, pubInstance.publish(topics, byteData));
 
         assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.stop());
         assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.terminate());

@@ -9,6 +9,8 @@
    <url>http://maven.apache.org</url>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <java.version>1.8</java.version>
+      <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
       <ezmq.version>0.0.1-SNAPSHOT</ezmq.version>
    </properties>
    <dependencies>
@@ -27,6 +29,15 @@
    <build>
       <finalName>edgex-ezmq-publisher-sample</finalName>
       <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven.compiler.plugin.version}</version>
+            <configuration>
+               <source>${java.version}</source>
+               <target>${java.version}</target>
+            </configuration>
+         </plugin>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>

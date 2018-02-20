@@ -10,6 +10,8 @@
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <ezmq.version>0.0.1-SNAPSHOT</ezmq.version>
+      <java.version>1.8</java.version>
+      <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
    </properties>
    <dependencies>
       <dependency>
@@ -27,6 +29,15 @@
    <build>
       <finalName>edgex-ezmq-subscriber-sample</finalName>
       <plugins>
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven.compiler.plugin.version}</version>
+            <configuration>
+               <source>${java.version}</source>
+               <target>${java.version}</target>
+            </configuration>
+         </plugin>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>

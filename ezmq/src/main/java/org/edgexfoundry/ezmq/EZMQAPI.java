@@ -17,6 +17,8 @@
 
 package org.edgexfoundry.ezmq;
 
+import java.util.Properties;
+
 import org.edgexfoundry.support.logging.client.EdgeXLogger;
 import org.edgexfoundry.support.logging.client.EdgeXLoggerFactory;
 import org.zeromq.ZMQ;
@@ -30,8 +32,17 @@ public class EZMQAPI {
     public EZMQStatusCode status = EZMQStatusCode.EZMQ_Unknown;
     private ZMQ.Context mContext;
 
+    // setting log level as per application.properties
     static {
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug");
+        try {
+            Properties props = new Properties();
+            props.load(EZMQAPI.class.getResourceAsStream("/application.properties"));
+            if (props.getProperty("ezmq.logging.level").equalsIgnoreCase("DEBUG")) {
+                System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private final static EdgeXLogger logger = EdgeXLoggerFactory.getEdgeXLogger(EZMQAPI.class);
 

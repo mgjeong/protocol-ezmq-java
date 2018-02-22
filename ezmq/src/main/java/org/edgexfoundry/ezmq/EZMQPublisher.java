@@ -175,7 +175,7 @@ public class EZMQPublisher {
             logger.error("Publish failed [data]");
             return EZMQErrorCode.EZMQ_ERROR;
         }
-        // logger.debug("Published data");
+        logger.debug("Published data");
         return EZMQErrorCode.EZMQ_OK;
     }
 

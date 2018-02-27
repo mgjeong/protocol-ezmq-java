@@ -1,5 +1,5 @@
 ###############################################################################
-# Copyright 2017 Samsung Electronics All Rights Reserved.
+# Copyright 2018 Samsung Electronics All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 ###############################################################################
 
 #!/bin/sh
-mvn clean install -U
+mvn clean install -U -Dmaven.test.skip=true
+
+cp /usr/bin/qemu-arm-static .
 echo "EZMQ build done"
+
 

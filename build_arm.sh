@@ -1,5 +1,5 @@
 ###############################################################################
-# Copyright 2017 Samsung Electronics All Rights Reserved.
+# Copyright 2018 Samsung Electronics All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,18 @@
 ###############################################################################
 
 #!/bin/sh
-mvn clean install -U
-echo "EZMQ build done"
+PROJECT_ROOT=$(pwd)
+echo $PROJECT_ROOT
+
+#build ezmq jar & run test cases
+cd ./ezmq
+./build_arm.sh
+
+#build ezmq sample [publisher]
+cd $PROJECT_ROOT/samples/ezmq-server
+./build_arm.sh
+
+#build ezmq sample [subscriber]
+cd $PROJECT_ROOT/samples/ezmq-client
+./build_arm.sh
 

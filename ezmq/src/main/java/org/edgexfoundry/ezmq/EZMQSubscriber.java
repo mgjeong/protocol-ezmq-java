@@ -315,6 +315,11 @@ public class EZMQSubscriber {
             recvTopic = new String(frame1);
         }
 
+        if (null == frame2) {
+            logger.error("Received header is NULL");
+            return;
+        }
+
         // Parse the header
         byte ezmqHeader = frame2[0];
         int contentType = ((ezmqHeader & CONTENT_TYPE_MASK) >> CONTENT_TYPE_OFFSET);

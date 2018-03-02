@@ -89,7 +89,9 @@ public class EZMQEventConverter {
         try {
             org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event eventObj = org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event
                     .parseFrom(event);
-            edgexEvent = eventObj.getEdgeXEventObject();
+            if(null != eventObj) {
+                edgexEvent = eventObj.getEdgeXEventObject();
+            }
         } catch (Exception e) {
             logger.error("toEvent: Invalid byte array", e.getMessage());
         }

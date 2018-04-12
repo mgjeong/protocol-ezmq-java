@@ -313,6 +313,9 @@ public class EZMQSubscriber {
             frame2 = frame1;
         } else {
             recvTopic = new String(frame1);
+            if (recvTopic.endsWith("/")) {
+                recvTopic = recvTopic.substring(0, recvTopic.length() - 1);
+            }
         }
 
         if (null == frame2) {

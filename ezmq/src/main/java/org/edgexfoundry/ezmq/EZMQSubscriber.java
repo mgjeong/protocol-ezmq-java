@@ -157,7 +157,7 @@ public class EZMQSubscriber {
             // Subscriber socket
             if (null == mSubscriber) {
                 mSubscriber = mContext.socket(ZMQ.SUB);
-                mSubscriber.connect(getSocketAddress());
+                mSubscriber.connect(getSocketAddress(mIp, mPort));
             }
 
             // Register sockets to poller
@@ -188,8 +188,8 @@ public class EZMQSubscriber {
         return EZMQErrorCode.EZMQ_OK;
     }
 
-    private String getSocketAddress() {
-        return TCP_PREFIX + mIp + ":" + mPort;
+    private String getSocketAddress(String ip, int port) {
+        return TCP_PREFIX + ip + ":" + port;
     }
 
     private String getInProcUniqueAddress() {
@@ -278,6 +278,62 @@ public class EZMQSubscriber {
             }
         }
         return result;
+    }
+
+    /**
+     * Subscribe for event/messages from given IP:Port on the given topic.
+     *
+     * Note (1) It will be using same Subscriber socket for connecting to given
+     * ip:port. (2) To unsubcribe use un-subscribe API with the same topic. (3)
+     * Topic name should be as path format. For example: home/livingroom/ (4)
+     * Topic name can have letters [a-z, A-z], numerics [0-9] and special
+     * characters _ - . and / (5) Topic will be appended with forward slash [/]
+     * in case, if application has not appended it.
+     *
+     * @param ip
+     *            Target[Publisher] IP address.
+     * @param port
+     *            Target[Publisher] Port number.
+     * @param topic
+     *            Topic to be subscribed.
+     * @return {@link EZMQErrorCode}
+     */
+    public EZMQErrorCode subscribe(String ip, int port, String topic) {
+        if (null == ip || port < 0) {
+            logger.error("Invalid param");
+            return EZMQErrorCode.EZMQ_ERROR;
+        }
+
+        // validate the topic
+        String validTopic = validateTopic(topic);
+        if (null == validTopic) {
+            logger.error("Invalid topic: " + topic);
+            return EZMQErrorCode.EZMQ_INVALID_TOPIC;
+        }
+        logger.debug("Topic is: " + validTopic);
+        return subscribeInternal(ip, port, validTopic);
+    }
+
+    private EZMQErrorCode subscribeInternal(String ip, int port, String topic) {
+        if (null == mSubscriber) {
+            logger.error("Subscriber is null");
+            return EZMQErrorCode.EZMQ_ERROR;
+        }
+
+        // subscribe for messages
+        try {
+            mSubLock.lock();
+            if (null != mSubscriber) {
+                mSubscriber.connect(getSocketAddress(ip, port));
+                mSubscriber.subscribe(topic.getBytes());
+            } else {
+                return EZMQErrorCode.EZMQ_ERROR;
+            }
+        } finally {
+            mSubLock.unlock();
+        }
+        logger.debug("subscribed for events IP: " + ip + " Port: " + port + " Topic: " + topic);
+        return EZMQErrorCode.EZMQ_OK;
     }
 
     private void parseData() {
@@ -393,7 +449,7 @@ public class EZMQSubscriber {
             return EZMQErrorCode.EZMQ_INVALID_TOPIC;
         }
         logger.debug("Topic is: " + validTopic);
-        return unSubscribeInternal(topic);
+        return unSubscribeInternal(validTopic);
 
     }
 
@@ -402,7 +458,6 @@ public class EZMQSubscriber {
             logger.error("Subscriber is null");
             return EZMQErrorCode.EZMQ_ERROR;
         }
-
         try {
             mSubLock.lock();
             if (null != mSubscriber) {

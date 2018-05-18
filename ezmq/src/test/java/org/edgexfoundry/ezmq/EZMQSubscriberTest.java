@@ -140,9 +140,9 @@ public class EZMQSubscriberTest {
         EZMQSubscriber subInstance = new EZMQSubscriber(mip, mPort, mCallback);
         assertNotNull(subInstance);
         assertEquals(EZMQErrorCode.EZMQ_OK, subInstance.start());
-        assertEquals(EZMQErrorCode.EZMQ_OK, subInstance.subscribe("107.108.81.131", 5562, mTopic));
+        assertEquals(EZMQErrorCode.EZMQ_OK, subInstance.subscribe("192.168.1.1", 5562, mTopic));
         assertEquals(EZMQErrorCode.EZMQ_ERROR, subInstance.subscribe(null, 5562, mTopic));
-        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, subInstance.subscribe("107.108.81.131", 5562, ""));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, subInstance.subscribe("192.168.1.1", 5562, ""));
         assertEquals(EZMQErrorCode.EZMQ_OK, subInstance.stop());
     }
 

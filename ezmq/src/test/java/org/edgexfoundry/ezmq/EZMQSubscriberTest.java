@@ -133,6 +133,20 @@ public class EZMQSubscriberTest {
     }
 
     @Test
+    public void subscribeTest6() {
+        EZMQAPI apiInstance = EZMQAPI.getInstance();
+        assertNotNull(apiInstance);
+        assertEquals(EZMQErrorCode.EZMQ_OK, apiInstance.initialize());
+        EZMQSubscriber subInstance = new EZMQSubscriber(mip, mPort, mCallback);
+        assertNotNull(subInstance);
+        assertEquals(EZMQErrorCode.EZMQ_OK, subInstance.start());
+        assertEquals(EZMQErrorCode.EZMQ_OK, subInstance.subscribe("192.168.1.1", 5562, mTopic));
+        assertEquals(EZMQErrorCode.EZMQ_ERROR, subInstance.subscribe(null, 5562, mTopic));
+        assertEquals(EZMQErrorCode.EZMQ_INVALID_TOPIC, subInstance.subscribe("192.168.1.1", 5562, ""));
+        assertEquals(EZMQErrorCode.EZMQ_OK, subInstance.stop());
+    }
+
+    @Test
     public void SubscribeTopicTest() {
         EZMQAPI apiInstance = EZMQAPI.getInstance();
         assertNotNull(apiInstance);

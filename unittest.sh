@@ -1,5 +1,5 @@
 ###############################################################################
-# Copyright 2017 Samsung Electronics All Rights Reserved.
+# Copyright 2018 Samsung Electronics All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,22 @@
 #
 ###############################################################################
 
-#!/bin/sh
-mvn clean install -U -Dmaven.test.skip=true
-echo "EZMQ build done"
+#!/bin/bash
+
+PROJECT_ROOT=$(pwd)
+
+function run_test(){
+    cd $PROJECT_ROOT/ezmq
+    mvn test
+    if [ $? -ne 0 ]; then
+        echo -e "\033[31m"Unittests failed"\033[0m"
+        exit 1
+    fi
+}
+
+echo -e "Running ezmq Unittests"
+run_test
+echo -e "Done Unittests"
+
+exit 0
 

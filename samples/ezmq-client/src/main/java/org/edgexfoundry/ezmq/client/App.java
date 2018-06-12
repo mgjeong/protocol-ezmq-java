@@ -27,6 +27,7 @@ import org.edgexfoundry.ezmq.EZMQAPI;
 import org.edgexfoundry.ezmq.EZMQContentType;
 import org.edgexfoundry.ezmq.EZMQErrorCode;
 import org.edgexfoundry.ezmq.EZMQMessage;
+import org.edgexfoundry.ezmq.EZMQStatusCode;
 import org.edgexfoundry.ezmq.EZMQSubscriber;
 import org.edgexfoundry.ezmq.EZMQSubscriber.EZMQSubCallback;
 import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
@@ -66,6 +67,10 @@ public class App {
             public void onMessageCB(EZMQMessage ezmqMsg) {
                 System.out.println("[-------------------------------------");
                 System.out.println("[APP: onMessageCB]");
+                if (null == ezmqMsg) {
+                    System.out.println("ezmqMsg is null");
+                    return;
+                }
                 EZMQContentType type = ezmqMsg.getContentType();
                 System.out.println("Cotent type: " + type);
 
@@ -81,6 +86,10 @@ public class App {
                 System.out.println("[-------------------------------------");
                 System.out.println("[APP: onMessageCB]");
                 System.out.println("Topic: " + topic);
+                if (null == ezmqMsg) {
+                    System.out.println("ezmqMsg is null");
+                    return;
+                }
                 EZMQContentType type = ezmqMsg.getContentType();
                 System.out.println("Cotent type: " + type);
 
@@ -186,7 +195,9 @@ public class App {
         // Prevent main thread from exit
         try {
             terminateLock.lock();
-            condVar.await();
+            while(apiInstance.getStatus() != EZMQStatusCode.EZMQ_Terminated) {
+                condVar.await();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

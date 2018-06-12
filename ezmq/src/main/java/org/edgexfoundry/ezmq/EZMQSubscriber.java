@@ -102,6 +102,10 @@ public class EZMQSubscriber {
     protected void finalize() {
         logger.debug("In finalize");
         stop();
+        try {
+            super.finalize();
+        } catch (Throwable e) {
+        }
     }
 
     /**

@@ -16,12 +16,12 @@
  * @version: 1.0.0
  *******************************************************************************/
 
-package org.edgexfoundry.domain.core;
+package org.edgexfoundry.ezmq.domain.core;
 
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.edgexfoundry.domain.common.BaseObject;
+import org.edgexfoundry.ezmq.domain.common.BaseObject;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @SuppressWarnings("serial")

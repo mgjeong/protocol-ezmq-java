@@ -16,7 +16,7 @@
  * @version: 1.0.0
  *******************************************************************************/
 
-package org.edgexfoundry.domain.common;
+package org.edgexfoundry.ezmq.domain.common;
 
 import java.io.Serializable;
 

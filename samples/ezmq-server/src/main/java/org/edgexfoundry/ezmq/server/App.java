@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.edgexfoundry.domain.core.Event;
-import org.edgexfoundry.domain.core.Reading;
+import org.edgexfoundry.ezmq.domain.core.Event;
+import org.edgexfoundry.ezmq.domain.core.Reading;
 import org.edgexfoundry.ezmq.EZMQAPI;
 import org.edgexfoundry.ezmq.EZMQCallback;
 import org.edgexfoundry.ezmq.EZMQErrorCode;

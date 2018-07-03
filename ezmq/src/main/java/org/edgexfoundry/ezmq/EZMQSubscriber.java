@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.edgexfoundry.domain.core.Event;
+import org.edgexfoundry.ezmq.domain.core.Event;
 import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 import org.edgexfoundry.ezmq.protobufevent.EZMQEventConverter;
 import org.edgexfoundry.support.logging.client.EdgeXLogger;

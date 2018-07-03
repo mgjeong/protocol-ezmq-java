@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.edgexfoundry.domain.core.Event;
+import org.edgexfoundry.ezmq.domain.core.Event;
 import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 import org.junit.Before;
 import org.junit.Test;

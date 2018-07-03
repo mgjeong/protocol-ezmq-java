@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import org.edgexfoundry.domain.core.Event;
-import org.edgexfoundry.domain.core.Reading;
+import org.edgexfoundry.ezmq.domain.core.Event;
+import org.edgexfoundry.ezmq.domain.core.Reading;
 import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 
 public class TestUtils {

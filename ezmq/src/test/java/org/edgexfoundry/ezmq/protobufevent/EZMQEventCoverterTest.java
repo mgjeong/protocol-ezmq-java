@@ -20,7 +20,7 @@ package org.edgexfoundry.ezmq.protobufevent;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.edgexfoundry.domain.core.Event;
+import org.edgexfoundry.ezmq.domain.core.Event;
 import org.edgexfoundry.ezmq.TestUtils;
 import org.junit.Test;
 

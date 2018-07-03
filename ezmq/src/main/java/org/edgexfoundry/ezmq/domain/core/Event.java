@@ -16,7 +16,7 @@
  * @version: 1.0.0
  *******************************************************************************/
 
-package org.edgexfoundry.domain.core;
+package org.edgexfoundry.ezmq.domain.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.edgexfoundry.domain.common.BaseObject;
+import org.edgexfoundry.ezmq.domain.common.BaseObject;
 import org.edgexfoundry.ezmq.EZMQContentType;
 import org.edgexfoundry.ezmq.EZMQMessage;
 import org.springframework.data.mongodb.core.mapping.DBRef;

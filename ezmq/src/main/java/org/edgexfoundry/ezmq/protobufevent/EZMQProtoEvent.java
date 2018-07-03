@@ -142,14 +142,14 @@ public final class EZMQProtoEvent {
     public static final class Event extends com.google.protobuf.GeneratedMessage
             implements EventOrBuilder {
 
-        public org.edgexfoundry.domain.core.Event edgeXEventObj;
+        public org.edgexfoundry.ezmq.domain.core.Event edgeXEventObj;
 
-        public Event(org.edgexfoundry.domain.core.Event event) {
+        public Event(org.edgexfoundry.ezmq.domain.core.Event event) {
             edgeXEventObj = event;
             this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
         }
 
-        public org.edgexfoundry.domain.core.Event getEdgeXEventObject() {
+        public org.edgexfoundry.ezmq.domain.core.Event getEdgeXEventObject() {
             return edgeXEventObj;
         }
 
@@ -157,7 +157,7 @@ public final class EZMQProtoEvent {
 
         // Use Event.newBuilder() to construct.
         private Event(com.google.protobuf.GeneratedMessage.Builder<?> builder,
-                org.edgexfoundry.domain.core.Event event) {
+                org.edgexfoundry.ezmq.domain.core.Event event) {
             super(builder);
             this.unknownFields = builder.getUnknownFields();
             edgeXEventObj = event;
@@ -193,10 +193,10 @@ public final class EZMQProtoEvent {
             com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet
                     .newBuilder();
 
-            edgeXEventObj = new org.edgexfoundry.domain.core.Event("");
+            edgeXEventObj = new org.edgexfoundry.ezmq.domain.core.Event("");
             try {
                 boolean done = false;
-                List<org.edgexfoundry.domain.core.Reading> edgeXReadings = new ArrayList<org.edgexfoundry.domain.core.Reading>();
+                List<org.edgexfoundry.ezmq.domain.core.Reading> edgeXReadings = new ArrayList<org.edgexfoundry.ezmq.domain.core.Reading>();
                 while (!done) {
                     int tag = input.readTag();
                     switch (tag) {
@@ -713,9 +713,9 @@ public final class EZMQProtoEvent {
                                 org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event.Builder.class);
             }
 
-            public org.edgexfoundry.domain.core.Event edgexEvent;
+            public org.edgexfoundry.ezmq.domain.core.Event edgexEvent;
 
-            public void setEdgeXReading(org.edgexfoundry.domain.core.Event event) {
+            public void setEdgeXReading(org.edgexfoundry.ezmq.domain.core.Event event) {
                 edgexEvent = event;
                 try {
                     setId(event.getId());
@@ -1636,14 +1636,14 @@ public final class EZMQProtoEvent {
     public static final class Reading extends com.google.protobuf.GeneratedMessage
             implements ReadingOrBuilder {
 
-        public org.edgexfoundry.domain.core.Reading edgeXReadingObject;
+        public org.edgexfoundry.ezmq.domain.core.Reading edgeXReadingObject;
 
-        public Reading(org.edgexfoundry.domain.core.Reading reading) {
+        public Reading(org.edgexfoundry.ezmq.domain.core.Reading reading) {
             edgeXReadingObject = reading;
             this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
         }
 
-        public org.edgexfoundry.domain.core.Reading getEdgeXReading() {
+        public org.edgexfoundry.ezmq.domain.core.Reading getEdgeXReading() {
             return edgeXReadingObject;
         }
 
@@ -1651,7 +1651,7 @@ public final class EZMQProtoEvent {
 
         // Use Reading.newBuilder() to construct.
         private Reading(com.google.protobuf.GeneratedMessage.Builder<?> builder,
-                org.edgexfoundry.domain.core.Reading edgeXReadingObj) {
+                org.edgexfoundry.ezmq.domain.core.Reading edgeXReadingObj) {
             super(builder);
             this.unknownFields = builder.getUnknownFields();
             edgeXReadingObject = edgeXReadingObj;
@@ -1686,7 +1686,7 @@ public final class EZMQProtoEvent {
             com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet
                     .newBuilder();
 
-            edgeXReadingObject = new org.edgexfoundry.domain.core.Reading();
+            edgeXReadingObject = new org.edgexfoundry.ezmq.domain.core.Reading();
             try {
                 boolean done = false;
                 while (!done) {
@@ -2254,9 +2254,9 @@ public final class EZMQProtoEvent {
                                 org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading.Builder.class);
             }
 
-            public org.edgexfoundry.domain.core.Reading edgexReading;
+            public org.edgexfoundry.ezmq.domain.core.Reading edgexReading;
 
-            public void setEdgeXReading(org.edgexfoundry.domain.core.Reading reading) {
+            public void setEdgeXReading(org.edgexfoundry.ezmq.domain.core.Reading reading) {
                 edgexReading = reading;
                 try {
                     setId(reading.getId());

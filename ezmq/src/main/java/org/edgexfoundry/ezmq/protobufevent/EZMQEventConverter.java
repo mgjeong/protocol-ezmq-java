@@ -17,8 +17,8 @@
 
 package org.edgexfoundry.ezmq.protobufevent;
 
-import org.edgexfoundry.domain.core.Event;
-import org.edgexfoundry.domain.core.Reading;
+import org.edgexfoundry.ezmq.domain.core.Event;
+import org.edgexfoundry.ezmq.domain.core.Reading;
 import org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event.Builder;
 import org.edgexfoundry.support.logging.client.EdgeXLogger;
 import org.edgexfoundry.support.logging.client.EdgeXLoggerFactory;

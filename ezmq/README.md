@@ -26,7 +26,14 @@
       ```
    3. After step 2, it will create a jar: </br>
        **~/protocol-ezmq-java/ezmq/target/edgex-ezmq-0.0.1-SNAPSHOT.jar**
-
+       
+       
+**Note:**<br>
+To build in **debug** mode:
+   - Goto: `~/protocol-ezmq-java/ezmq/src/main/resources`
+   - Modify logging level in **application.properties**: 
+        ` ezmq.logging.level=DEBUG`
+        
 ## ezmq Binary info ##
    - ezmq library
      - Library : edgex-ezmq-0.0.1-SNAPSHOT.jar

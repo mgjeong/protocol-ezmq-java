@@ -44,17 +44,15 @@ public class EZMQEventConverter {
         if (null == event) {
             return null;
         }
-        org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event protoEventObj = null;
         org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event protoEvent = null;
         try {
 
-            protoEventObj = new org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event(event);
+            new org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event(event);
             Builder eventbuild = EZMQProtoEvent.Event.newBuilder();
             eventbuild.setEdgeXReading(event);
 
             for (Reading reading : event.getReadings()) {
-                org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading protoReading = new org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading(
-                        reading);
+                new org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading(reading);
                 org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading.Builder readingBuild = EZMQProtoEvent.Reading
                         .newBuilder();
                 readingBuild.setEdgeXReading(reading);

@@ -43,7 +43,7 @@ public class App {
     public static Lock terminateLock = new ReentrantLock();
     public static java.util.concurrent.locks.Condition condVar = terminateLock.newCondition();
 
-    private static void printEvent(Event event) {
+    private static void printEvent(org.edgexfoundry.ezmq.domain.core.Event event) {
         System.out.println("Device: " + event.getDevice());
         System.out.println("Readings: ");
         List<Reading> readings = event.getReadings();
@@ -75,7 +75,7 @@ public class App {
                 System.out.println("Cotent type: " + type);
 
                 if (EZMQContentType.EZMQ_CONTENT_TYPE_PROTOBUF == type) {
-                    printEvent((Event) ezmqMsg);
+                    printEvent((org.edgexfoundry.ezmq.domain.core.Event) ezmqMsg);
                 } else if (EZMQContentType.EZMQ_CONTENT_TYPE_BYTEDATA == type) {
                     printByteData((EZMQByteData) ezmqMsg);
                 }
@@ -94,8 +94,7 @@ public class App {
                 System.out.println("Cotent type: " + type);
 
                 if (EZMQContentType.EZMQ_CONTENT_TYPE_PROTOBUF == type) {
-                    printEvent((Event) ezmqMsg);
-
+                    printEvent((org.edgexfoundry.ezmq.domain.core.Event) ezmqMsg);
                 } else if (EZMQContentType.EZMQ_CONTENT_TYPE_BYTEDATA == type) {
                     printByteData((EZMQByteData) ezmqMsg);
                 }

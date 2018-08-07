@@ -54,7 +54,7 @@ public class App {
         };
     }
 
-    public static Event getEdgeXEvent() {
+    public static org.edgexfoundry.ezmq.domain.core.Event getEdgeXEvent() {
 
         List<Reading> readings = null;
         readings = new ArrayList<Reading>();
@@ -82,7 +82,7 @@ public class App {
         readings.add(reading1);
         readings.add(reading2);
 
-        Event event = new Event("Test", readings);
+        org.edgexfoundry.ezmq.domain.core.Event event = new Event("Test", readings);
         event.setCreated(10);
         event.setModified(20);
         event.setId("id");
@@ -163,7 +163,7 @@ public class App {
             e1.printStackTrace();
         }
 
-        Event event = getEdgeXEvent();
+        org.edgexfoundry.ezmq.domain.core.Event event = getEdgeXEvent();
         int i = 1;
         System.out.println("--------- Will Publish 15 events at interval of 2 seconds ---------");
         while (i <= 15) {

@@ -39,7 +39,11 @@ public class EZMQPublisher {
 
     private ZMQ.Socket mPublisher;
     private ZMQ.Context mContext;
-
+    
+    //Secure mode
+    private boolean mIsSecured;
+    private StringBuffer mServerSecretKey;
+    
     // Thread safety lock
     private ReentrantLock mPubLock;
 
@@ -48,6 +52,7 @@ public class EZMQPublisher {
     private final int EZMQ_VERSION = 1;
     private final int CONTENT_TYPE_OFFSET = 5;
     private final int VERSION_OFFSET = 2;
+    private final int KEY_LENGTH = 40;
 
     private final static EdgeXLogger logger = EdgeXLoggerFactory
             .getEdgeXLogger(EZMQPublisher.class);
@@ -64,6 +69,7 @@ public class EZMQPublisher {
         mPort = port;
         mCallback = callback;
         mContext = EZMQAPI.getInstance().getContext();
+        mIsSecured = EZMQAPI.getInstance().isSecured();
         mPubLock = new ReentrantLock(true);
     }
 
@@ -78,7 +84,32 @@ public class EZMQPublisher {
         } catch (Throwable e) {
         }
     }
-
+    
+    /**
+     * Set the server private/secret key.
+     * Note: <br>
+     * (1) Key should be 40-character string encoded in the Z85 encoding format <br>
+     * (2) This API should be called before start() API.
+     *
+     * @param key
+     *            Server private/Secret key.
+     * @return {@link EZMQErrorCode}
+     * @throws Exception 
+     *            Throws, if security is not enabled. 
+     */
+    public EZMQErrorCode setServerPrivateKey(String key) throws Exception {
+    	if(!mIsSecured) {
+            logger.error("Security is not enabled");
+            throw new Exception("Security is not enabled");
+    	}
+    	if (null == key || key.length() != KEY_LENGTH) {
+            logger.error("Invalid key length");
+            return EZMQErrorCode.EZMQ_ERROR;  	
+    	}
+    	mServerSecretKey =  new StringBuffer(key);
+        return EZMQErrorCode.EZMQ_OK;
+    }
+    
     /**
      * Starts PUB instance.
      *
@@ -94,6 +125,11 @@ public class EZMQPublisher {
             mPubLock.lock();
             if (null == mPublisher) {
                 mPublisher = mContext.socket(ZMQ.PUB);
+                if(mIsSecured && mServerSecretKey != null) {
+                    //Set server key
+                    mPublisher.setCurveServer(true);
+                    mPublisher.setCurveSecretKey(mServerSecretKey.toString().getBytes());
+                }
                 mPublisher.bind(getSocketAddress());
             }
         } catch (Exception e) {
@@ -102,6 +138,10 @@ public class EZMQPublisher {
             return EZMQErrorCode.EZMQ_ERROR;
         } finally {
             mPubLock.unlock();
+        	//clear the key
+            if(mServerSecretKey != null) {
+            	mServerSecretKey.delete(0, mServerSecretKey.length());
+            }
         }
         logger.debug("Publisher started [address]: " + getSocketAddress());
         return EZMQErrorCode.EZMQ_OK;
@@ -201,10 +241,10 @@ public class EZMQPublisher {
     /**
      * Publish events on a specific topic on socket for subscribers.
      *
-     * Note (1) Topic name should be as path format. For example:
-     * home/livingroom/ (2) Topic name can have letters [a-z, A-z], numerics
-     * [0-9] and special characters _ - . and / (3) Topic will be appended with
-     * forward slash [/] in case, if application has not appended it.
+     * Note:<br>
+     * (1) Topic name should be as path format. For example: home/livingroom/ <br>
+     * (2) Topic name can have letters [a-z, A-z], numerics [0-9] and special characters _ - . and / <br>
+     * (3) Topic will be appended with forward slash [/] in case, if application has not appended it.
      *
      * @param topic
      *            Topic on which event needs to be published.
@@ -232,10 +272,10 @@ public class EZMQPublisher {
      * the topic in list, if it failed to publish event it will return
      * EZMQ_ERROR/EZMQ_INVALID_TOPIC.
      *
-     * Note: (1) Topic name should be as path format. For example:
-     * home/livingroom/ (2) Topic name can have letters [a-z, A-z], numerics
-     * [0-9] and special characters _ - . and / (3) Topic will be appended with
-     * forward slash [/] in case, if application has not appended it.
+     * Note:<br>
+     * (1) Topic name should be as path format. For example: home/livingroom/ <br>
+     * (2) Topic name can have letters [a-z, A-z], numerics [0-9] and special characters _ - . and / <br>
+     * (3) Topic will be appended with forward slash [/] in case, if application has not appended it.
      *
      * @param topics
      *            Topic on which event needs to be published.
@@ -286,6 +326,10 @@ public class EZMQPublisher {
                 return result;
             }
             mPublisher = null;
+            // Clear the key
+            if (null != mServerSecretKey) {
+            	mServerSecretKey.delete(0, mServerSecretKey.length());            
+            }
         } finally {
             mPubLock.unlock();
         }

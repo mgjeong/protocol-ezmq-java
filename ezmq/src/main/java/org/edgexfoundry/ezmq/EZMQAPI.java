@@ -33,6 +33,7 @@ public class EZMQAPI {
     private static EZMQAPI mInstance;
     public EZMQStatusCode status = EZMQStatusCode.EZMQ_Unknown;
     private ZMQ.Context mContext;
+    private static boolean mIsSecured;
 
     // setting log level as per application.properties
     static {
@@ -44,6 +45,11 @@ public class EZMQAPI {
             String mode = props.getProperty("ezmq.logging.level");
             if ((null != mode) && (mode.equalsIgnoreCase("DEBUG"))) {
                 System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug");
+            }
+            String isSecured = props.getProperty("ezmq.security");
+            if ((null != isSecured) && (isSecured.equalsIgnoreCase("TRUE"))) {
+                mIsSecured = true; 
+                System.out.println("Security is enabled");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,8 +118,11 @@ public class EZMQAPI {
         return status;
     }
 
-    // For EZMQ internal use
-    public ZMQ.Context getContext() {
+    ZMQ.Context getContext() {
         return mContext;
+    }
+    
+    boolean isSecured() {
+        return mIsSecured;
     }
 }

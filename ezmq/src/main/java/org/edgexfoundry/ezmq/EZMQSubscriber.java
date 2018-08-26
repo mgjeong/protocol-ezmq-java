@@ -50,6 +50,12 @@ public class EZMQSubscriber {
     // ZMQ shut-down socket
     private ZMQ.Socket mShutdownServer;
     private ZMQ.Socket mShutdownClient;
+    
+    //Secured
+    private boolean mIsSecured;
+    private StringBuffer mServerPublicKey;
+    private StringBuffer mClientPublicKey;
+    private StringBuffer mClientSecretKey;
 
     // Thread safety lock
     private ReentrantLock mSubLock;
@@ -59,6 +65,7 @@ public class EZMQSubscriber {
     private final String TOPIC_PATTERN = "[a-zA-Z0-9-_./]+";
     private final int CONTENT_TYPE_OFFSET = 5;
     private final int CONTENT_TYPE_MASK = 0xFF;
+    private final int KEY_LENGTH = 40;
     private final static EdgeXLogger logger = EdgeXLoggerFactory
             .getEdgeXLogger(EZMQSubscriber.class);
 
@@ -77,6 +84,7 @@ public class EZMQSubscriber {
         mPort = port;
         mCallback = callback;
         mContext = EZMQAPI.getInstance().getContext();
+        mIsSecured = EZMQAPI.getInstance().isSecured();
         mSubLock = new ReentrantLock(true);
     }
 
@@ -131,6 +139,79 @@ public class EZMQSubscriber {
          */
         public void onMessageCB(String topic, EZMQMessage ezmqMessage);
     }
+   
+    /**
+     * Set the security keys of client/its own.
+     * Note: <br>
+     * (1) Key should be 40-character string encoded in the Z85 encoding format <br>
+     * (2) This API should be called before start() API.
+     *
+     * @param clientPrivateKey
+     *           Client private/secret key.
+     * @param clientPublicKey
+     *           Client public key.    
+     *                
+     * @return {@link EZMQErrorCode}
+     * @throws Exception 
+     *           Throws, if security is not enabled. 
+     */
+    public EZMQErrorCode setClientKeys(String clientPrivateKey, String clientPublicKey) throws Exception {
+    	if(!mIsSecured) {
+            logger.error("Security is not enabled"); 
+            throw new Exception("Security is not enabled");
+    	}
+    	if (null == clientPrivateKey || clientPrivateKey.length() != KEY_LENGTH) {
+            logger.error("Invalid clientPrivateKey length");
+            return EZMQErrorCode.EZMQ_ERROR;  	
+    	}
+    	if (null == clientPublicKey || clientPublicKey.length() != KEY_LENGTH) {
+            logger.error("Invalid clientPublicKey length");
+            return EZMQErrorCode.EZMQ_ERROR;  	
+    	}
+    	mClientSecretKey = new StringBuffer(clientPrivateKey);
+    	mClientPublicKey = new StringBuffer(clientPublicKey);
+		return EZMQErrorCode.EZMQ_OK;
+    }
+    
+    /**
+     * Set the server public key.
+     * Note: <br>
+     * (1) Key should be 40-character string encoded in the Z85 encoding format <br>
+     * (2) This API should be called before start() API. <br>
+     * (3) If using the following API in secured mode: <br>
+     *     EZMQErrorCode subscribe(String ip, int port, String topic);
+     *     setServerPublicKey API needs to be called before that.
+     *
+     * @param key
+     *            Server private/Secret key.
+     * @return {@link EZMQErrorCode} 
+     * @throws Exception 
+     *            Throws, if security is not enabled. 
+     */
+    public EZMQErrorCode setServerPublicKey(String key) throws Exception {
+    	if(!mIsSecured) {
+            logger.error("Security is not enabled");
+            throw new Exception("Security is not enabled");	
+    	}
+    	if (null == key || key.length() != KEY_LENGTH) {
+            logger.error("Invalid key length");
+            return EZMQErrorCode.EZMQ_ERROR;  	
+    	}
+    	mServerPublicKey = new StringBuffer(key);
+        return EZMQErrorCode.EZMQ_OK;
+    }
+    
+    private void clearSubKeys() {
+        if(mServerPublicKey != null) {
+        	mServerPublicKey.delete(0, mServerPublicKey.length());
+        }
+        if(mClientPublicKey != null) {
+        	mClientPublicKey.delete(0, mClientPublicKey.length());
+        }
+        if(mClientSecretKey != null) {
+        	mClientSecretKey.delete(0, mClientSecretKey.length());
+        }
+    }
 
     /**
      * Starts SUB instance.
@@ -161,6 +242,18 @@ public class EZMQSubscriber {
             // Subscriber socket
             if (null == mSubscriber) {
                 mSubscriber = mContext.socket(ZMQ.SUB);
+                //Set server public key
+                if(mIsSecured && mServerPublicKey != null) {
+                	mSubscriber.setCurveServerKey(mServerPublicKey.toString().getBytes());
+                }
+                //Set Client public key   
+                if(mIsSecured && mClientPublicKey != null) {
+                	mSubscriber.setCurvePublicKey(mClientPublicKey.toString().getBytes());
+                }
+                //Set Client private/secret key  
+                if(mIsSecured && mClientSecretKey != null) {
+                	mSubscriber.setCurveSecretKey(mClientSecretKey.toString().getBytes());
+                }
                 mSubscriber.connect(getSocketAddress(mIp, mPort));
             }
 
@@ -175,8 +268,10 @@ public class EZMQSubscriber {
             mSubLock.unlock();
             stop();
             return EZMQErrorCode.EZMQ_ERROR;
+        } finally {
+            clearSubKeys();
         }
-
+        
         // Receiver thread
         if (null == mThread) {
             mThread = new Thread(new Runnable() {
@@ -213,10 +308,10 @@ public class EZMQSubscriber {
     /**
      * Subscribe for event/messages on a particular topic.
      *
-     * Note (1) Topic name should be as path format. For example:
-     * home/livingroom/ (2) Topic name can have letters [a-z, A-z], numerics
-     * [0-9] and special characters _ - . and / (3) Topic will be appended with
-     * forward slash [/] in case, if application has not appended it.
+     * Note:<br>
+     * (1) Topic name should be as path format. For example: home/livingroom/ <br>
+     * (2) Topic name can have letters [a-z, A-z], numerics [0-9] and special characters _ - . and / <br>
+     * (3) Topic will be appended with forward slash [/] in case, if application has not appended it.
      *
      * @param topic
      *            Topic to be subscribed.
@@ -259,10 +354,10 @@ public class EZMQSubscriber {
      * in list, if it failed to subscribe events it will return
      * EZMQ_ERROR/EZMQ_INVALID_TOPIC.
      *
-     * Note: (1) Topic name should be as path format. For example:
-     * home/livingroom/ (2) Topic name can have letters [a-z, A-z], numerics
-     * [0-9] and special characters _ - . and / (3) Topic will be appended with
-     * forward slash [/] in case, if application has not appended it.
+     * Note:<br>
+     * (1) Topic name should be as path format. For example: home/livingroom/ <br>
+     * (2) Topic name can have letters [a-z, A-z], numerics [0-9] and special characters _ - . and / <br>
+     * (3) Topic will be appended with forward slash [/] in case, if application has not appended it.
      *
      * @param topics
      *            List of topics to be subscribed.
@@ -287,12 +382,13 @@ public class EZMQSubscriber {
     /**
      * Subscribe for event/messages from given IP:Port on the given topic.
      *
-     * Note (1) It will be using same Subscriber socket for connecting to given
-     * ip:port. (2) To unsubcribe use un-subscribe API with the same topic. (3)
-     * Topic name should be as path format. For example: home/livingroom/ (4)
-     * Topic name can have letters [a-z, A-z], numerics [0-9] and special
-     * characters _ - . and / (5) Topic will be appended with forward slash [/]
-     * in case, if application has not appended it.
+     * Note: <br>
+     * (1) It will be using same Subscriber socket for connecting to given ip:port. <br>
+     * (2) To un-subscribe use un-subscribe API with the same topic. <br>
+     * (3) Topic name should be as path format. For example: home/livingroom/ <br>
+     * (4) Topic name can have letters [a-z, A-z], numerics [0-9] and special characters _ - . and / <br>
+     * (5) Topic will be appended with forward slash [/] in case, if application has not appended it.<br>
+     * (6) If using in secured mode: Call setServerPublicKey API with target server public key before calling this API.
      *
      * @param ip
      *            Target[Publisher] IP address.
@@ -327,7 +423,19 @@ public class EZMQSubscriber {
         // subscribe for messages
         try {
             mSubLock.lock();
-            if (null != mSubscriber) {
+            if (null != mSubscriber) {	
+                //Set server public key
+                if(mIsSecured && mServerPublicKey != null) {
+                	mSubscriber.setCurveServerKey(mServerPublicKey.toString().getBytes());
+                }
+                //Set Client public key   
+                if(mIsSecured && mClientPublicKey != null) {
+                	mSubscriber.setCurvePublicKey(mClientPublicKey.toString().getBytes());
+                }
+                //Set Client private/secret key  
+                if(mIsSecured && mClientSecretKey != null) {
+                	mSubscriber.setCurveSecretKey(mClientSecretKey.toString().getBytes());
+                }
                 mSubscriber.connect(getSocketAddress(ip, port));
                 mSubscriber.subscribe(topic.getBytes());
             } else {
@@ -335,6 +443,7 @@ public class EZMQSubscriber {
             }
         } finally {
             mSubLock.unlock();
+            clearSubKeys();
         }
         logger.debug("subscribed for events IP: " + ip + " Port: " + port + " Topic: " + topic);
         return EZMQErrorCode.EZMQ_OK;
@@ -436,10 +545,10 @@ public class EZMQSubscriber {
     /**
      * Un-subscribe for a specific topic events.
      *
-     * Note: (1) Topic name should be as path format. For example:
-     * home/livingroom/ (2) Topic name can have letters [a-z, A-z], numerics
-     * [0-9] and special characters _ - . and / (3) Topic will be appended with
-     * forward slash [/] in case, if application has not appended it.
+     * Note:<br>
+     * (1) Topic name should be as path format. For example: home/livingroom/ <br>
+     * (2) Topic name can have letters [a-z, A-z], numerics [0-9] and special characters _ - . and / <br>
+     * (3) Topic will be appended with forward slash [/] in case, if application has not appended it.
      *
      * @param topic
      *            topic to be unsubscribed.
@@ -481,10 +590,10 @@ public class EZMQSubscriber {
      * if it failed to unsubscribe events it will return
      * EZMQ_ERROR/EZMQ_INVALID_TOPIC.
      *
-     * Note: (1) Topic name should be as path format. For example:
-     * home/livingroom/ (2) Topic name can have letters [a-z, A-z], numerics
-     * [0-9] and special characters _ - . and / (3) Topic will be appended with
-     * forward slash [/] in case, if application has not appended it.
+     * Note:<br>
+     * (1) Topic name should be as path format. For example: home/livingroom/ <br>
+     * (2) Topic name can have letters [a-z, A-z], numerics [0-9] and special characters _ - . and / <br>
+     * (3) Topic will be appended with forward slash [/] in case, if application has not appended it.
      *
      * @param topics
      *            List of topics to be unsubscribed.
@@ -549,6 +658,8 @@ public class EZMQSubscriber {
                 mSubscriber.close();
             }
 
+            //clear keys
+            clearSubKeys();
             mSubscriber = null;
             mPoller = null;
             mShutdownClient = null;

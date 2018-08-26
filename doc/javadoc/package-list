@@ -1,3 +1,4 @@
 org.edgexfoundry.ezmq
 org.edgexfoundry.ezmq.bytedata
+org.edgexfoundry.ezmq.domain.common
 org.edgexfoundry.ezmq.domain.core

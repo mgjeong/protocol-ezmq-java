@@ -181,12 +181,12 @@ public class EZMQSubscriberTest {
     assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.start());
     Event event = TestUtils.getEdgeXEvent();
     for (int i = 0; i < TOTAL_EVENTS; i++) {
-      assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(mTopic, event));
       try {
         Thread.sleep(500);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
+      assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.publish(mTopic, event));
     }
     assertEquals(EZMQErrorCode.EZMQ_OK, pubInstance.stop());
     try {

@@ -29,10 +29,15 @@
        
        
 **Note:**<br>
-To build in **debug** mode:
+(A) To build in **debug** mode:
    - Goto: `~/protocol-ezmq-java/ezmq/src/main/resources`
    - Modify logging level in **application.properties**: 
         ` ezmq.logging.level=DEBUG`
+        
+(B) To build in **unsecure** mode:
+   - Goto: `~/protocol-ezmq-java/ezmq/src/main/resources`
+   - Modify security flag in **application.properties**: 
+        ` ezmq.security=FALSE`        
         
 ## ezmq Binary info ##
    - ezmq library

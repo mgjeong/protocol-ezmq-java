@@ -27,10 +27,10 @@ import java.awt.Event;
  */
 public interface EZMQMessage {
 
-    /**
-     * Get content-type for the message.
-     *
-     * @return EZMQContentType content-type.
-     */
-    EZMQContentType getContentType();
+  /**
+   * Get content-type for the message.
+   *
+   * @return EZMQContentType content-type.
+   */
+  EZMQContentType getContentType();
 }

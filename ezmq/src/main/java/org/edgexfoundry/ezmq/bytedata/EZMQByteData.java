@@ -26,50 +26,50 @@ import org.edgexfoundry.ezmq.EZMQMessage;
  */
 public class EZMQByteData implements EZMQMessage {
 
-    private byte[] mByteData;
+  private byte[] mByteData;
 
-    /**
-     * Constructor for EZMQ Byte Data.
-     *
-     * @param data
-     *            Byte data.
-     */
-    public EZMQByteData(byte[] data) {
-        mByteData = data;
-    }
+  /**
+   * Constructor for EZMQ Byte Data.
+   *
+   * @param data
+   *            Byte data.
+   */
+  public EZMQByteData(byte[] data) {
+    mByteData = data;
+  }
 
-    /**
-     * Get the byte data.
-     *
-     * @return byte data.
-     */
-    public byte[] getByteData() {
-        return mByteData;
-    }
+  /**
+   * Get the byte data.
+   *
+   * @return byte data.
+   */
+  public byte[] getByteData() {
+    return mByteData;
+  }
 
-    /**
-     * Set the byte data.
-     *
-     * @param byteData
-     *            byteData to set
-     *
-     * @return byte data.
-     */
-    public EZMQErrorCode setByteData(byte[] byteData) {
-        if (null == byteData) {
-            return EZMQErrorCode.EZMQ_ERROR;
-        }
-        mByteData = byteData;
-        return EZMQErrorCode.EZMQ_OK;
+  /**
+   * Set the byte data.
+   *
+   * @param byteData
+   *            byteData to set
+   *
+   * @return byte data.
+   */
+  public EZMQErrorCode setByteData(byte[] byteData) {
+    if (null == byteData) {
+      return EZMQErrorCode.EZMQ_ERROR;
     }
+    mByteData = byteData;
+    return EZMQErrorCode.EZMQ_OK;
+  }
 
-    /**
-     * Get Content type.
-     *
-     * @return Content type for Byte Data.
-     */
-    @Override
-    public EZMQContentType getContentType() {
-        return EZMQContentType.EZMQ_CONTENT_TYPE_BYTEDATA;
-    }
+  /**
+   * Get Content type.
+   *
+   * @return Content type for Byte Data.
+   */
+  @Override
+  public EZMQContentType getContentType() {
+    return EZMQContentType.EZMQ_CONTENT_TYPE_BYTEDATA;
+  }
 }

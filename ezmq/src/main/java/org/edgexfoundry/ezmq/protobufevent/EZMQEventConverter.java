@@ -29,70 +29,70 @@ import org.edgexfoundry.support.logging.client.EdgeXLoggerFactory;
  */
 public class EZMQEventConverter {
 
-    private final static EdgeXLogger logger = EdgeXLoggerFactory
-            .getEdgeXLogger(EZMQEventConverter.class);
+  private final static EdgeXLogger logger =
+      EdgeXLoggerFactory.getEdgeXLogger(EZMQEventConverter.class);
 
-    /**
-     * Convert EdgeX event to protocol buffer event byte array.
-     *
-     * @param event
-     *            {@link Event}
-     * @return Converted Protobuf event as byte array.
-     */
-    public static byte[] toProtoBuf(Event event) {
+  /**
+   * Convert EdgeX event to protocol buffer event byte array.
+   *
+   * @param event
+   *            {@link Event}
+   * @return Converted Protobuf event as byte array.
+   */
+  public static byte[] toProtoBuf(Event event) {
 
-        if (null == event) {
-            return null;
-        }
-        org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event protoEvent = null;
-        try {
+    if (null == event) {
+      return null;
+    }
+    org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event protoEvent = null;
+    try {
 
-            new org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event(event);
-            Builder eventbuild = EZMQProtoEvent.Event.newBuilder();
-            eventbuild.setEdgeXReading(event);
+      new org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event(event);
+      Builder eventbuild = EZMQProtoEvent.Event.newBuilder();
+      eventbuild.setEdgeXReading(event);
 
-            for (Reading reading : event.getReadings()) {
-                new org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading(reading);
-                org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading.Builder readingBuild = EZMQProtoEvent.Reading
-                        .newBuilder();
-                readingBuild.setEdgeXReading(reading);
-                eventbuild.addReading(readingBuild);
-            }
+      for (Reading reading : event.getReadings()) {
+        new org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading(reading);
+        org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Reading.Builder readingBuild =
+            EZMQProtoEvent.Reading.newBuilder();
+        readingBuild.setEdgeXReading(reading);
+        eventbuild.addReading(readingBuild);
+      }
 
-            protoEvent = eventbuild.build();
-        } catch (Exception e) {
-            logger.error("toEvent: Invalid byte array", e.getMessage());
-        }
-        if (null == protoEvent) {
-            return null;
-        }
-        return protoEvent.toByteArray();
+      protoEvent = eventbuild.build();
+    } catch (Exception e) {
+      logger.error("toEvent: Invalid byte array", e.getMessage());
+    }
+    if (null == protoEvent) {
+      return null;
+    }
+    return protoEvent.toByteArray();
+  }
+
+  /**
+   * Convert byte[] array of Protocol buffer event to edgeX event.
+   *
+   * @param event
+   *            Byte array to be converted to Event.
+   *
+   * @return EdgeX event.
+   */
+  public static Event toEdgeXEvent(byte[] event) {
+
+    if (null == event) {
+      return null;
     }
 
-    /**
-     * Convert byte[] array of Protocol buffer event to edgeX event.
-     *
-     * @param event
-     *            Byte array to be converted to Event.
-     *
-     * @return EdgeX event.
-     */
-    public static Event toEdgeXEvent(byte[] event) {
-
-        if (null == event) {
-            return null;
-        }
-
-        Event edgexEvent = null;
-        try {
-            org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event eventObj = org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event
-                    .parseFrom(event);
-            if(null != eventObj) {
-                edgexEvent = eventObj.getEdgeXEventObject();
-            }
-        } catch (Exception e) {
-            logger.error("toEvent: Invalid byte array", e.getMessage());
-        }
-        return edgexEvent;
+    Event edgexEvent = null;
+    try {
+      org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event eventObj =
+          org.edgexfoundry.ezmq.protobufevent.EZMQProtoEvent.Event.parseFrom(event);
+      if (null != eventObj) {
+        edgexEvent = eventObj.getEdgeXEventObject();
+      }
+    } catch (Exception e) {
+      logger.error("toEvent: Invalid byte array", e.getMessage());
     }
+    return edgexEvent;
+  }
 }

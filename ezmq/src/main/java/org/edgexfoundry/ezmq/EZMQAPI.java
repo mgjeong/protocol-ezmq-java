@@ -116,8 +116,9 @@ public class EZMQAPI {
   public EZMQStatusCode getStatus() {
     return status;
   }
-
-  ZMQ.Context getContext() {
+  
+  //For EZMQ internal use
+  public ZMQ.Context getContext() {
     return mContext;
   }
 

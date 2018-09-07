@@ -20,7 +20,6 @@ package org.edgexfoundry.ezmq;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
 import org.edgexfoundry.support.logging.client.EdgeXLogger;
 import org.edgexfoundry.support.logging.client.EdgeXLoggerFactory;
 import org.zeromq.ZMQ;
@@ -30,90 +29,100 @@ import org.zeromq.ZMQ;
  */
 public class EZMQAPI {
 
-    private static EZMQAPI mInstance;
-    public EZMQStatusCode status = EZMQStatusCode.EZMQ_Unknown;
-    private ZMQ.Context mContext;
+  private static EZMQAPI mInstance;
+  public EZMQStatusCode status = EZMQStatusCode.EZMQ_Unknown;
+  private ZMQ.Context mContext;
+  private static boolean mIsSecured;
 
-    // setting log level as per application.properties
-    static {
-        InputStream stream = null;
+  // setting log level as per application.properties
+  static {
+    InputStream stream = null;
+    try {
+      Properties props = new Properties();
+      stream = EZMQAPI.class.getResourceAsStream("/application.properties");
+      props.load(stream);
+      String mode = props.getProperty("ezmq.logging.level");
+      if ((null != mode) && (mode.equalsIgnoreCase("DEBUG"))) {
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug");
+      }
+      String isSecured = props.getProperty("ezmq.security");
+      if ((null != isSecured) && (isSecured.equalsIgnoreCase("TRUE"))) {
+        mIsSecured = true;
+        System.out.println("Security is enabled");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      if (null != stream) {
         try {
-            Properties props = new Properties();
-            stream = EZMQAPI.class.getResourceAsStream("/application.properties");
-            props.load(stream);
-            String mode = props.getProperty("ezmq.logging.level");
-            if ((null != mode) && (mode.equalsIgnoreCase("DEBUG"))) {
-                System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (null != stream) {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+          stream.close();
+        } catch (IOException e) {
+          e.printStackTrace();
         }
+      }
     }
-    private final static EdgeXLogger logger = EdgeXLoggerFactory.getEdgeXLogger(EZMQAPI.class);
+  }
+  private final static EdgeXLogger logger = EdgeXLoggerFactory.getEdgeXLogger(EZMQAPI.class);
 
-    private EZMQAPI() {
-        status = EZMQStatusCode.EZMQ_Constructed;
-    }
+  private EZMQAPI() {
+    status = EZMQStatusCode.EZMQ_Constructed;
+  }
 
-    /**
-     * Get instance of EZMQAPI Class.
-     *
-     * @return Instance of EZMQAPI.
-     */
-    public static synchronized EZMQAPI getInstance() {
-        if (null == mInstance) {
-            mInstance = new EZMQAPI();
-        }
-        return mInstance;
+  /**
+   * Get instance of EZMQAPI Class.
+   *
+   * @return Instance of EZMQAPI.
+   */
+  public static synchronized EZMQAPI getInstance() {
+    if (null == mInstance) {
+      mInstance = new EZMQAPI();
     }
+    return mInstance;
+  }
 
-    /**
-     * Initialize required EZMQ components. This API should be called first,
-     * before using any EZMQ APIs.
-     *
-     * @return {@link EZMQErrorCode}
-     */
-    public EZMQErrorCode initialize() {
-        mContext = ZMQ.context(1);
-        status = EZMQStatusCode.EZMQ_Initialized;
-        logger.debug("EZMQ initialized");
-        return EZMQErrorCode.EZMQ_OK;
-    }
+  /**
+   * Initialize required EZMQ components. This API should be called first,
+   * before using any EZMQ APIs.
+   *
+   * @return {@link EZMQErrorCode}
+   */
+  public EZMQErrorCode initialize() {
+    mContext = ZMQ.context(1);
+    status = EZMQStatusCode.EZMQ_Initialized;
+    logger.debug("EZMQ initialized");
+    return EZMQErrorCode.EZMQ_OK;
+  }
 
-    /**
-     * Perform cleanup of EZMQ components.
-     *
-     * @return {@link EZMQErrorCode}
-     */
-    public EZMQErrorCode terminate() {
-        if (null != mContext) {
-            mContext.term();
-            mContext = null;
-            status = EZMQStatusCode.EZMQ_Terminated;
-            logger.debug("EZMQ terminated");
-        }
-        return EZMQErrorCode.EZMQ_OK;
+  /**
+   * Perform cleanup of EZMQ components.
+   *
+   * @return {@link EZMQErrorCode}
+   */
+  public EZMQErrorCode terminate() {
+    if (null != mContext) {
+      mContext.term();
+      mContext = null;
+      status = EZMQStatusCode.EZMQ_Terminated;
+      logger.debug("EZMQ terminated");
     }
+    return EZMQErrorCode.EZMQ_OK;
+  }
 
-    /**
-     * Return status of EZMQ service.
-     *
-     * @return {@link EZMQStatusCode}
-     */
-    public EZMQStatusCode getStatus() {
-        return status;
-    }
+  /**
+   * Return status of EZMQ service.
+   *
+   * @return {@link EZMQStatusCode}
+   */
+  public EZMQStatusCode getStatus() {
+    return status;
+  }
+  
+  //For EZMQ internal use
+  public ZMQ.Context getContext() {
+    return mContext;
+  }
 
-    // For EZMQ internal use
-    public ZMQ.Context getContext() {
-        return mContext;
-    }
+  boolean isSecured() {
+    return mIsSecured;
+  }
 }

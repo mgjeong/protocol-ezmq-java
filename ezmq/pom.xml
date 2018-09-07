@@ -114,6 +114,11 @@
                <systemPropertyVariables>
                   <jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
                </systemPropertyVariables>
+                   <excludes>
+                    <exclude>org/edgexfoundry/ezmq/domain/common/*</exclude>
+                    <exclude>org/edgexfoundry/ezmq/domain/core/*</exclude>
+                    <exclude>org/edgexfoundry/ezmq/protobufevent/*</exclude>
+                </excludes>
             </configuration>
          </plugin>
       </plugins>

@@ -21,8 +21,8 @@ package org.edgexfoundry.ezmq;
  * Enum represent content-types of EZMQ.
  */
 public enum EZMQContentType {
-    EZMQ_CONTENT_TYPE_PROTOBUF,
-    EZMQ_CONTENT_TYPE_BYTEDATA,
-    EZMQ_CONTENT_TYPE_AML, // Not in use as of now
-    EZMQ_CONTENT_TYPE_JSON // Not in use as of now
+  EZMQ_CONTENT_TYPE_PROTOBUF,
+  EZMQ_CONTENT_TYPE_BYTEDATA,
+  EZMQ_CONTENT_TYPE_AML, // Not in use as of now
+  EZMQ_CONTENT_TYPE_JSON // Not in use as of now
 }

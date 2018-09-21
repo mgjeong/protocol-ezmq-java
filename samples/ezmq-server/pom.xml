@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.edgexfoundry.ezmq.server</groupId>
    <artifactId>edgex-ezmq-server</artifactId>
-   <version>0.0.1-SNAPSHOT</version>
+   <version>1.0.0-Release</version>
    <packaging>jar</packaging>
    <name>edgex-ezmq-server</name>
    <url>http://maven.apache.org</url>
@@ -11,7 +11,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <java.version>1.8</java.version>
       <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
-      <ezmq.version>0.0.1-SNAPSHOT</ezmq.version>
+      <ezmq.version>1.0.0-Release</ezmq.version>
    </properties>
    <dependencies>
       <dependency>

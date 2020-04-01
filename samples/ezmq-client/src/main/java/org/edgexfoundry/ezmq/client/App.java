@@ -41,9 +41,9 @@ public class App {
   private static EZMQSubscriber subInstance = null;
   private static Lock terminateLock = new ReentrantLock();
   private static java.util.concurrent.locks.Condition condVar = terminateLock.newCondition();
-  private static String mServerPublicKey = "tXJx&1^QE2g7WCXbF.$$TVP.wCtxwNhR8?iLi&S<";
-  private static String mClientPublicKey = "-QW?Ved(f:<::3d5tJ$[4Er&]6#9yr=vha/caBc(";
-  private static String mClientSecretKey = "ZB1@RS6Kv^zucova$kH(!o>tZCQ.<!Q)6-0aWFmW";
+  private static String mServerPublicKey = "";
+  private static String mClientPublicKey = "";
+  private static String mClientSecretKey = "";
 
   private static void printEvent(org.edgexfoundry.ezmq.domain.core.Event event) {
     System.out.println("Device: " + event.getDevice());

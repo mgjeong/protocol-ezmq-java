@@ -27,10 +27,10 @@ import org.edgexfoundry.ezmq.domain.core.Reading;
 import org.edgexfoundry.ezmq.bytedata.EZMQByteData;
 
 public class TestUtils {
-  public static final String SERVER_SECRET_KEY = "[:X%Q3UfY+kv2A^.wv:(qy2E=bk0L][cm=mS3Hcx";
-  public static final String SERVER_PUBLIC_KEY = "tXJx&1^QE2g7WCXbF.$$TVP.wCtxwNhR8?iLi&S<";
-  public static final String CLIENT_SECRET_KEY = "ZB1@RS6Kv^zucova$kH(!o>tZCQ.<!Q)6-0aWFmW";
-  public static final String CLIENT_PUBLIC_KEY = "-QW?Ved(f:<::3d5tJ$[4Er&]6#9yr=vha/caBc(";
+  public static final String SERVER_SECRET_KEY = "";
+  public static final String SERVER_PUBLIC_KEY = "";
+  public static final String CLIENT_SECRET_KEY = "";
+  public static final String CLIENT_PUBLIC_KEY = "";
 
   public static Event getEdgeXEvent() {
 

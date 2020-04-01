@@ -36,7 +36,8 @@ public class App {
   private static EZMQErrorCode result = EZMQErrorCode.EZMQ_ERROR;
   public static EZMQAPI apiInstance = EZMQAPI.getInstance();
   public static EZMQPublisher pubInstance = null;
-  public static String mServerSecretKey = "[:X%Q3UfY+kv2A^.wv:(qy2E=bk0L][cm=mS3Hcx";
+  // put server key
+  public static String mServerSecretKey = "";
 
   private static void callback() {
     mCallback = new EZMQCallback() {
